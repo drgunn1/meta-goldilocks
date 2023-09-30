@@ -1,0 +1,13 @@
+[Unit]
+Description=Start the UWB ranging on Mama bear
+After=mamabear-app.service weston.socket
+Requires=mamabear-app.service weston.socket
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/sfl_uwb.sh
+Restart=always
+
+[Install]
+WantedBy=graphical.target

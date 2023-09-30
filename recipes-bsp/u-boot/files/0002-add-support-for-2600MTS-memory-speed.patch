@@ -1,0 +1,40 @@
+From a35462c46bbac4b50e178d80727595b068463ac0 Mon Sep 17 00:00:00 2001
+From: Don Gunn <dongunn@hotmail.com>
+Date: Mon, 31 Jul 2023 11:19:04 -0700
+Subject: [PATCH] add support for 2600MTS memory speed
+
+---
+ arch/arm/mach-imx/imx8m/clock_imx8mm.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/imx8m/clock_imx8mm.c b/arch/arm/mach-imx/imx8m/clock_imx8mm.c
+index 203c52d1d30..7718a2ef273 100644
+--- a/arch/arm/mach-imx/imx8m/clock_imx8mm.c
++++ b/arch/arm/mach-imx/imx8m/clock_imx8mm.c
+@@ -51,7 +51,8 @@ static struct imx_int_pll_rate_table imx8mm_fracpll_tbl[] = {
+ 	PLL_1443X_RATE(1000000000U, 250, 3, 1, 0),
+ 	PLL_1443X_RATE(800000000U, 200, 3, 1, 0),
+ 	PLL_1443X_RATE(750000000U, 250, 2, 2, 0),
+-	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
++	PLL_1443X_RATE(666000000U, 333, 3, 2, 0),//add support for 1333MHz DDR4
++	PLL_1443X_RATE(650000000U, 325, 12, 0, 0),
+ 	PLL_1443X_RATE(600000000U, 300, 3, 2, 0),
+ 	PLL_1443X_RATE(594000000U, 99, 1, 2, 0),
+ 	PLL_1443X_RATE(400000000U, 400, 3, 3, 0),
+@@ -229,6 +230,16 @@ int intpll_configure(enum pll_clocks pll, ulong freq)
+ 		pll_div_ctl_val = INTPLL_MAIN_DIV_VAL(0x12c) |
+ 			INTPLL_PRE_DIV_VAL(3) | INTPLL_POST_DIV_VAL(2);
+ 		break;
++	case MHZ(666):
++		/* 24 * 0x14d / 3 / 2 ^ 2 */
++		pll_div_ctl_val = INTPLL_MAIN_DIV_VAL(0x14D) |
++			INTPLL_PRE_DIV_VAL(3) | INTPLL_POST_DIV_VAL(2);
++		break;
++	case MHZ(650):
++		/* 24 * 0x145 / 3 / 2 ^ 2 */
++		pll_div_ctl_val = INTPLL_MAIN_DIV_VAL(0x145) |
++			INTPLL_PRE_DIV_VAL(0xc) | INTPLL_POST_DIV_VAL(0);
++		break;
+ 	case MHZ(750):
+ 		/* 24 * 0xfa / 2 / 2 ^ 2 */
+ 		pll_div_ctl_val = INTPLL_MAIN_DIV_VAL(0xfa) |

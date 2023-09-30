@@ -1,0 +1,552 @@
+From 591417859c8e369d42150e118bddf97ce61715fc Mon Sep 17 00:00:00 2001
+From: Don Gunn <dongunn@hotmail.com>
+Date: Mon, 31 Jul 2023 11:36:59 -0700
+Subject: [PATCH] updated device tree, defconfig, fixed bug with MIPI-Display
+ generating messages
+
+---
+ .../boot/dts/freescale/imx8mp-ddr4-evk.dts    | 292 +++++++-----------
+ arch/arm64/configs/imx_v8_defconfig           |  17 +-
+ drivers/gpu/drm/bridge/sec-dsim.c             |   4 +-
+ 3 files changed, 127 insertions(+), 186 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
+index ba1ca6efff710..4d1d04f568916 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
+@@ -144,16 +144,16 @@
+ 		status = "okay";
+ 	};
+ 	
+-	reg_usb_c_vbus: regulator-usb-c-vbus {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_usb1_vbus>;
+-		regulator-name = "usb_c_vbus";
+-		regulator-min-microvolt = <5000000>;
+-		regulator-max-microvolt = <5000000>;
+-		gpio = <&gpio1 14 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-	};
++//	reg_usb_c_vbus: regulator-usb-c-vbus {
++//		compatible = "regulator-fixed";
++//		pinctrl-names = "default";
++//		pinctrl-0 = <&pinctrl_usb1_vbus>;
++//		regulator-name = "usb_c_vbus";
++//		regulator-min-microvolt = <5000000>;
++//		regulator-max-microvolt = <5000000>;
++//		gpio = <&gpio1 14 GPIO_ACTIVE_HIGH>;
++//		enable-active-high;
++//	};
+ 	
+ 	bt_sco_codec: bt_sco_codec {
+ 		#sound-dai-cells = <1>;
+@@ -275,20 +275,20 @@
+ };
+ 
+ 
+-//&clk {
+-//	assigned-clocks = <&clk IMX8MP_CLK_AUDIO_AHB>,
+-//			  <&clk IMX8MP_CLK_AUDIO_AXI_SRC>,
+-//			  <&clk IMX8MP_AUDIO_PLL1>,
+-//			  <&clk IMX8MP_AUDIO_PLL2>,
+-//			  <&clk IMX8MP_VIDEO_PLL1>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+-//				 <&clk IMX8MP_SYS_PLL3_OUT>;
+-//	assigned-clock-rates = <400000000>,
+-//			       <600000000>,
+-//			       <393216000>,
+-//			       <361267200>,
+-//			       <1039500000>;
+-//};
++&clk {
++	assigned-clocks = <&clk IMX8MP_CLK_AUDIO_AHB>,
++			  <&clk IMX8MP_CLK_AUDIO_AXI_SRC>,
++			  <&clk IMX8MP_AUDIO_PLL1>,
++			  <&clk IMX8MP_AUDIO_PLL2>,
++			  <&clk IMX8MP_VIDEO_PLL1>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
++				 <&clk IMX8MP_SYS_PLL3_OUT>;
++	assigned-clock-rates = <400000000>,
++			       <600000000>,
++			       <393216000>,
++			       <361267200>,
++			       <1039500000>;
++};
+ 
+ &{/reserved-memory} {
+ 	linux,cma {
+@@ -333,12 +333,6 @@
+ 	status = "okay";
+ };
+ 
+-//&pwm1 {
+-//	pinctrl-names = "default";
+-//	pinctrl-0 = <&pinctrl_pwm1>;
+-//	status = "okay";
+-//};
+-
+ &aud2htx {
+ 	status = "okay";
+ };
+@@ -612,68 +606,50 @@
+ 
+ //MIPI-DSI interface
+ &lcdif1 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
+-//				<&clk IMX8MP_CLK_MEDIA_AXI>,
+-//				<&clk IMX8MP_CLK_MEDIA_APB>;
+-//	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>,
+-//				<&clk IMX8MP_SYS_PLL1_800M>,
+-//				<&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <0>, <400000000>, <200000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
++				<&clk IMX8MP_CLK_MEDIA_AXI>,
++				<&clk IMX8MP_CLK_MEDIA_APB>;
++	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>,
++				<&clk IMX8MP_SYS_PLL1_800M>,
++				<&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <0>, <400000000>, <200000000>;
+ 	
+-//	status = "okay";
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ 
+ //LVDS Interface
+ &lcdif2 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
+-//				<&clk IMX8MP_CLK_MEDIA_AXI>,
+-//				<&clk IMX8MP_CLK_MEDIA_APB>;
+-//	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>,
+-//				<&clk IMX8MP_SYS_PLL1_800M>,
+-//				<&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <0>, <400000000>, <200000000>;
+-//	status = "okay";
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
++				<&clk IMX8MP_CLK_MEDIA_AXI>,
++				<&clk IMX8MP_CLK_MEDIA_APB>;
++	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>,
++				<&clk IMX8MP_SYS_PLL1_800M>,
++				<&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <0>, <400000000>, <200000000>;
+ 	status = "disabled";
+ };
+ 
+ // HDMI Interface
+ &lcdif3 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
+-//				<&clk IMX8MP_CLK_MEDIA_AXI>,
+-//				<&clk IMX8MP_CLK_MEDIA_APB>;
+-//	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>,
+-//				<&clk IMX8MP_SYS_PLL1_800M>,
+-//				<&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <0>, <400000000>, <200000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
++				<&clk IMX8MP_CLK_MEDIA_AXI>,
++				<&clk IMX8MP_CLK_MEDIA_APB>;
++	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>,
++				<&clk IMX8MP_SYS_PLL1_800M>,
++				<&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <0>, <400000000>, <200000000>;
+ 	status = "okay";
+-//	status = "disabled";
+ 	thres-low  = <2 3>;             /* (FIFO * 2 / 3) */
+ 	thres-high = <3 3>;             /* (FIFO * 3 / 3) */
+ };
+ 
+-// GPIOs: LCD_STDBY, LCD_RESET
++
+ &ldb {
+-//	status = "okay";
+ 	status = "disabled";
+-//	lvds-channel@0 {
+-//		fsl,data-mapping = "spwg";
+-//		fsl,data-width = <24>;
+-//		status = "okay";
+-
+-//		port@1 {
+-//			reg = <1>;
+-//
+-//			lvds_out: endpoint {
+-//				remote-endpoint = <&panel_lvds_in>;
+-//			};
+-//		};
+-//	};
+ };
+ 
+ &ldb_phy {
+-//	status = "okay";
+ 	status = "disabled";
+ };
+ &irqsteer_hdmi {
+@@ -746,18 +722,6 @@
+ 	status = "okay";
+ };
+ 
+-//&sai2 {
+-//	#sound-dai-cells = <0>;
+-//	pinctrl-names = "default";
+-//	pinctrl-0 = <&pinctrl_sai2>;
+-//	assigned-clocks = <&clk IMX8MP_CLK_SAI2>;
+-//	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
+-//	assigned-clock-rates = <12288000>;
+-//	status = "okay";
+-//};
+-
+-
+-
+ &sai3 {
+ 	#sound-dai-cells = <0>;
+ 	pinctrl-names = "default";
+@@ -839,15 +803,16 @@
+ 	extcon = <&extcon_usb1>;
+ 
+ 	maximum-speed = "high-speed";	
+-//	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <400000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
++
++	assigned-clock-rates = <400000000>;
+ 
+ 	status = "okay";
+ };
+ 
+ &usb3_phy1 {
+-	vbus-supply = <&reg_usb_c_vbus>;
++//	vbus-supply = <&reg_usb_c_vbus>;
+ 	fsl,phy-tx-vref-tune = <0xe>;
+ 	fsl,phy-tx-preemp-amp-tune = <3>;
+ 	fsl,phy-tx-vboost-level = <5>;
+@@ -862,12 +827,12 @@
+ };
+ 
+ &usb_dwc3_1 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <400000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <400000000>;
+ 
+ //Host only settings
+-	dr_mode = "host";
++//	dr_mode = "host";
+ //	hnp-disable;
+ //	srp-disable;
+ //	adp-disable;
+@@ -882,7 +847,7 @@
+ 	srp-disable;
+ 	adp-disable;
+ 	usb-role-switch;
+-	role-switch-default-mode = "host";
++	role-switch-default-mode = "none";
+ 	snps,dis-u1-entry-quirk;
+ 	snps,dis-u2-entry-quirk;
+ 	status = "okay";
+@@ -960,20 +925,12 @@
+ 			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x400001c3
+ 			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000019
+ 			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x40000019
++			MX8MP_IOMUXC_GPIO1_IO01__ANAMIX_REF_CLK_24M 	0x16
+ 	//		MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19 		0x106
+-	//		MX8MP_IOMUXC_SAI1_TXD1__GPIO4_IO13		0x146
+-	//		MX8MP_IOMUXC_SAI2_RXFS__GPIO4_IO21		0x106
+ 
+ 		>;
+ 	};
+ 
+-//	pinctrl_pwm1: pwm1grp {
+-//		// TODO: FUTURE: validate 0x116 flags
+-//		fsl,pins = <
+-//			MX8MP_IOMUXC_SAI5_MCLK__PWM1_OUT	0x116
+-//		>;
+-//	};
+-
+ 	pinctrl_ecspi1: ecspi1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK		0x82
+@@ -1038,20 +995,6 @@
+ 		>;
+ 	};
+ 
+-//	pinctrl_lvds_backlight: lvds_backlightgrp {
+-//		fsl,pins = <
+-//			MX8MP_IOMUXC_SAI5_RXFS__GPIO3_IO19	0x116
+-//		>;
+-//	};
+-
+-//	pinctrl_mipi_dsi_en: mipi_dsi_en {
+-//		// TODO: FUTURE: verify pad flags
+-//		fsl,pins = <
+-//			MX8MP_IOMUXC_SAI5_RXD0__GPIO3_IO21	0x1d6
+-//			MX8MP_IOMUXC_SAI5_RXD1__GPIO3_IO22      0x1d6
+-//		>;
+-//	};
+-
+ 
+ 
+ 	pinctrl_pmic: pmicgrp {
+@@ -1072,7 +1015,6 @@
+ 			MX8MP_IOMUXC_SAI5_RXD0__AUDIOMIX_PDM_BIT_STREAM00	0xd6
+ 			MX8MP_IOMUXC_SAI5_RXD1__AUDIOMIX_PDM_BIT_STREAM01	0xd6
+ 			MX8MP_IOMUXC_SAI5_RXD2__AUDIOMIX_PDM_BIT_STREAM02	0xd6
+-		//	MX8MP_IOMUXC_SAI5_RXD3__AUDIOMIX_PDM_BIT_STREAM03	0xd6
+ 		>;
+ 	};
+ 
+@@ -1087,8 +1029,6 @@
+ 			MX8MP_IOMUXC_SPDIF_TX__GPIO5_IO03			0xd6
+ 			MX8MP_IOMUXC_SAI3_RXFS__AUDIOMIX_SAI3_RX_SYNC		0xd6
+ 			MX8MP_IOMUXC_SAI3_RXC__AUDIOMIX_SAI3_RX_BCLK		0xd6
+-	//		MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28			0xd6
+-	//		MX8MP_IOMUXC_SAI3_RXC__GPIO4_IO29			0xd6
+ 		>;
+ 	};
+ 
+@@ -1142,8 +1082,6 @@
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_UART3_RXD__UART3_DTE_TX   0x140	
+ 			MX8MP_IOMUXC_UART3_TXD__UART3_DTE_RX 	0x140	
+-//			MX8MP_IOMUXC_SD1_RESET_B__UART3_DTE_CTS 0x140	//needs to be an input
+-//			MX8MP_IOMUXC_SD1_STROBE__UART3_DTE_RTS 0x140	//needs to be an output
+ 		>;
+ 	};
+ 
+@@ -1159,11 +1097,11 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_usb1_vbus: usb1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR		0x19	//USB1 Power Enable
+-		>;
+-	};
++//	pinctrl_usb1_vbus: usb1grp {
++//		fsl,pins = <
++//			MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR		0x19	//USB1 Power Enable
++//		>;
++//	};
+ 
+ 
+ 	pinctrl_usdhc1: usdhc1grp {
+@@ -1313,24 +1251,24 @@
+ };
+ 
+ &vpu_g1 {
+-//	assigned-clocks = <&clk IMX8MP_VPU_PLL>, <&clk IMX8MP_CLK_VPU_G1>, <&clk IMX8MP_CLK_VPU_BUS>;
+-//	assigned-clock-parents = <0>, <&clk IMX8MP_VPU_PLL_OUT>, <&clk IMX8MP_VPU_PLL_OUT>;
+-//	assigned-clock-rates = <600000000>, <600000000>, <600000000>;
++	assigned-clocks = <&clk IMX8MP_VPU_PLL>, <&clk IMX8MP_CLK_VPU_G1>, <&clk IMX8MP_CLK_VPU_BUS>;
++	assigned-clock-parents = <0>, <&clk IMX8MP_VPU_PLL_OUT>, <&clk IMX8MP_VPU_PLL_OUT>;
++	assigned-clock-rates = <600000000>, <600000000>, <600000000>;
+ 
+ 	status = "okay";
+ };
+ 
+ &vpu_g2 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_VPU_G2>, <&clk IMX8MP_CLK_VPU_BUS>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>, <&clk IMX8MP_VPU_PLL_OUT>;
+-//	assigned-clock-rates = <500000000>, <600000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_VPU_G2>, <&clk IMX8MP_CLK_VPU_BUS>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>, <&clk IMX8MP_VPU_PLL_OUT>;
++	assigned-clock-rates = <500000000>, <600000000>;
+ 	status = "okay";
+ };
+ 
+ &vpu_vc8000e {
+-//	assigned-clocks = <&clk IMX8MP_CLK_VPU_VC8000E>,<&clk IMX8MP_CLK_VPU_BUS>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>, <&clk IMX8MP_VPU_PLL_OUT>;
+-//	assigned-clock-rates = <400000000>, <600000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_VPU_VC8000E>,<&clk IMX8MP_CLK_VPU_BUS>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>, <&clk IMX8MP_VPU_PLL_OUT>;
++	assigned-clock-rates = <400000000>, <600000000>;
+ 	status = "okay";
+ };
+ 
+@@ -1339,42 +1277,42 @@
+ };
+ 
+ &gpu_3d {
+-//	assigned-clocks = <&clk IMX8MP_CLK_GPU3D_CORE>,
+-//			  <&clk IMX8MP_CLK_GPU3D_SHADER_CORE>,
+-//			  <&clk IMX8MP_CLK_GPU_AXI>,
+-//			  <&clk IMX8MP_CLK_GPU_AHB>,
+-//			  <&clk IMX8MP_GPU_PLL>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+-//				 <&clk IMX8MP_SYS_PLL1_800M>,
+-//				 <&clk IMX8MP_GPU_PLL_OUT>,
+-//				 <&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <800000000>, <800000000>,
+-//			       <600000000>, <300000000>,
+-//			       <600000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_GPU3D_CORE>,
++			  <&clk IMX8MP_CLK_GPU3D_SHADER_CORE>,
++			  <&clk IMX8MP_CLK_GPU_AXI>,
++			  <&clk IMX8MP_CLK_GPU_AHB>,
++			  <&clk IMX8MP_GPU_PLL>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
++				 <&clk IMX8MP_SYS_PLL1_800M>,
++				 <&clk IMX8MP_GPU_PLL_OUT>,
++				 <&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <800000000>, <800000000>,
++			       <600000000>, <300000000>,
++			       <600000000>;
+ 	status = "okay";
+ };
+ 
+ &gpu_2d {
+-//	assigned-clocks = <&clk IMX8MP_CLK_GPU2D_CORE>,
+-//			  <&clk IMX8MP_CLK_GPU_AXI>,
+-//			  <&clk IMX8MP_CLK_GPU_AHB>,
+-//			  <&clk IMX8MP_GPU_PLL>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+-//				 <&clk IMX8MP_GPU_PLL_OUT>,
+-//				 <&clk IMX8MP_GPU_PLL_OUT>;
+-//	assigned-clock-rates = <800000000>, <600000000>,
+-//			       <300000000>, <600000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_GPU2D_CORE>,
++			  <&clk IMX8MP_CLK_GPU_AXI>,
++			  <&clk IMX8MP_CLK_GPU_AHB>,
++			  <&clk IMX8MP_GPU_PLL>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
++				 <&clk IMX8MP_GPU_PLL_OUT>,
++				 <&clk IMX8MP_GPU_PLL_OUT>;
++	assigned-clock-rates = <800000000>, <600000000>,
++			       <300000000>, <600000000>;
+ 	status = "okay";
+ };
+ 
+ &ml_vipsi {
+-//	assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
+-//			  <&clk IMX8MP_CLK_ML_AXI>,
+-//			  <&clk IMX8MP_CLK_ML_AHB>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+-//				 <&clk IMX8MP_SYS_PLL1_800M>,
+-//				 <&clk IMX8MP_GPU_PLL_OUT>;
+-//	assigned-clock-rates = <800000000>, <800000000>, <300000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
++			  <&clk IMX8MP_CLK_ML_AXI>,
++			  <&clk IMX8MP_CLK_ML_AHB>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
++				 <&clk IMX8MP_SYS_PLL1_800M>,
++				 <&clk IMX8MP_GPU_PLL_OUT>;
++	assigned-clock-rates = <800000000>, <800000000>, <300000000>;
+ 	status = "okay";
+ };
+ 
+@@ -1384,9 +1322,9 @@
+ 
+ &mipi_csi_0 {
+ 	// TODO: FUTURE: validate clocks
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_CAM1_PIX>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <400000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_CAM1_PIX>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <400000000>;
+ 
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+@@ -1417,9 +1355,9 @@
+ };
+ 
+ &isi_0 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+-//			  <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+-//	assigned-clock-rates = <400000000>, <200000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
++			  <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
++	assigned-clock-rates = <400000000>, <200000000>;
+ 	status = "okay";
+ 
+ 	cap_device {
+@@ -1432,9 +1370,9 @@
+ };
+ 
+ &isi_1 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+-//			  <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+-//	assigned-clock-rates = <400000000>, <200000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
++			  <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
++	assigned-clock-rates = <400000000>, <200000000>;
+ 	status = "disabled";
+ 
+ 	cap_device {
+@@ -1443,13 +1381,13 @@
+ };
+ 
+ &isp_0 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <400000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <400000000>;
+ };
+ 
+ &isp_1 {
+-//	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
+-//	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
+-//	assigned-clock-rates = <400000000>;
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
++	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
++	assigned-clock-rates = <400000000>;
+ };
+diff --git a/arch/arm64/configs/imx_v8_defconfig b/arch/arm64/configs/imx_v8_defconfig
+index d9a92e6b24e02..0d1db82ea5c5b 100644
+--- a/arch/arm64/configs/imx_v8_defconfig
++++ b/arch/arm64/configs/imx_v8_defconfig
+@@ -6441,23 +6441,26 @@ CONFIG_USB_CONFIGFS_F_UVC=y
+ CONFIG_USB_ZERO=m
+ # CONFIG_USB_ZERO_HNPTEST is not set
+ CONFIG_USB_AUDIO=m
+-# CONFIG_GADGET_UAC1 is not set
++CONFIG_GADGET_UAC1=y
++CONFIG_GADGET_UAC1_LEGACY=y
+ CONFIG_USB_ETH=m
+ CONFIG_USB_ETH_RNDIS=y
+ # CONFIG_USB_ETH_EEM is not set
+-# CONFIG_USB_G_NCM is not set
++CONFIG_USB_G_NCM=m
+ # CONFIG_USB_GADGETFS is not set
+ # CONFIG_USB_FUNCTIONFS is not set
+ CONFIG_USB_MASS_STORAGE=m
+ CONFIG_USB_G_SERIAL=m
+ # CONFIG_USB_MIDI_GADGET is not set
+ # CONFIG_USB_G_PRINTER is not set
+-# CONFIG_USB_CDC_COMPOSITE is not set
+-# CONFIG_USB_G_ACM_MS is not set
+-# CONFIG_USB_G_MULTI is not set
+-# CONFIG_USB_G_HID is not set
++CONFIG_USB_CDC_COMPOSITE=y
++CONFIG_USB_G_ACM_MS=y
++CONFIG_USB_G_MULTI=y
++CONFIG_USB_G_MULTI_RNDIS=y
++CONFIG_USB_G_MULTI_CDC=y
++CONFIG_USB_G_HID=y
+ # CONFIG_USB_G_DBGP is not set
+-# CONFIG_USB_G_WEBCAM is not set
++CONFIG_USB_G_WEBCAM=y
+ # CONFIG_USB_RAW_GADGET is not set
+ # end of USB Gadget precomposed configurations
+ 
+diff --git a/drivers/gpu/drm/bridge/sec-dsim.c b/drivers/gpu/drm/bridge/sec-dsim.c
+index fc9ca98f6ef71..a273b2d54565b 100644
+--- a/drivers/gpu/drm/bridge/sec-dsim.c
++++ b/drivers/gpu/drm/bridge/sec-dsim.c
+@@ -398,8 +398,8 @@ static const struct dsim_hblank_par *sec_mipi_dsim_get_hblank_par(const char *na
+ 		size   = ARRAY_SIZE(hblank_4lanes);
+ 		break;
+ 	default:
+-		pr_err("No hblank data for mode %s with %d lanes\n",
+-		       name, lanes);
++	//	pr_err("No hblank data for mode %s with %d lanes\n",
++	//	       name, lanes);
+ 		return NULL;
+ 	}
+ 

@@ -1,0 +1,6 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+
+
+SRC_URI:append = "\
+	0001-enable-experimental-features-in-bluetoothd.patch \
+"

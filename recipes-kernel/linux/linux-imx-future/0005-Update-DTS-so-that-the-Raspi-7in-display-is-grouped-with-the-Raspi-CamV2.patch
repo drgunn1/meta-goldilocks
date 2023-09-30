@@ -1,0 +1,40 @@
+From ddec2930a403fb3cd0e193f383a804473cee0016 Mon Sep 17 00:00:00 2001
+From: Don Gunn <dongunn@hotmail.com>
+Date: Fri, 29 Sep 2023 17:41:14 -0700
+Subject: [PATCH] Update DTS so that the Raspi 7" display is grouped with the
+ Raspi CamV2
+
+---
+ arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk-imx219.dts | 5 +++++
+ arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts        | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk-imx219.dts b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk-imx219.dts
+index 3bd2868bd9e6..2daaf171d2e5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk-imx219.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk-imx219.dts
+@@ -53,6 +53,11 @@
+ 
+ };
+ 
++&lcdif1 {
++	status = "okay"; //enable the 7" raspi display
++	};
++	
++
+ &iomuxc {
+ 	/delete-node/ pinctrl_csi0_pwn;
+ 	
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
+index 62024e147508..fddb73002c6b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
+@@ -614,7 +614,7 @@
+ 				<&clk IMX8MP_SYS_PLL1_800M>;
+ 	assigned-clock-rates = <0>, <400000000>, <200000000>;
+ 	
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ 

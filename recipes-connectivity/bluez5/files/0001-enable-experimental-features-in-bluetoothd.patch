@@ -1,0 +1,25 @@
+From b8cb6895cf6a1218161237072c03d689e5061701 Mon Sep 17 00:00:00 2001
+From: Don Gunn <dongunn@hotmail.com>
+Date: Sat, 30 Sep 2023 06:20:50 -0700
+Subject: [PATCH] enable experimental features in bluetoothd
+
+---
+ src/bluetooth.service.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/bluetooth.service.in b/src/bluetooth.service.in
+index beb98ce..03e57ee 100644
+--- a/src/bluetooth.service.in
++++ b/src/bluetooth.service.in
+@@ -6,7 +6,7 @@ ConditionPathIsDirectory=/sys/class/bluetooth
+ [Service]
+ Type=dbus
+ BusName=org.bluez
+-ExecStart=@pkglibexecdir@/bluetoothd
++ExecStart=@pkglibexecdir@/bluetoothd -E
+ NotifyAccess=main
+ #WatchdogSec=10
+ #Restart=on-failure
+-- 
+2.34.1
+

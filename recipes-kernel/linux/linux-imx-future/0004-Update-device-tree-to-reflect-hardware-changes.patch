@@ -1,0 +1,47 @@
+From b63bb2d8c514df875d9b33e6e847515f0e49881e Mon Sep 17 00:00:00 2001
+From: Don Gunn <dongunn@hotmail.com>
+Date: Fri, 29 Sep 2023 12:09:20 -0700
+Subject: [PATCH] Update device tree to reflect hardware changes for the
+ interrupt pin on the USB-C interface Update Kernel config to add support for
+ USB audio
+
+---
+ arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts | 4 ++--
+ arch/arm64/configs/imx_v8_defconfig               | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
+index f17a787df903..62024e147508 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-ddr4-evk.dts
+@@ -551,7 +551,7 @@
+ 		pinctrl-0 = <&pinctrl_typec>;
+ 		reg = <0x51>;
+ 		interrupt-parent = <&gpio1>;
+-		interrupts = <29 8>;
++		interrupts = <3 8>;
+ 
+ 		port {
+ 			typec_dr_sw: endpoint {
+@@ -1051,7 +1051,7 @@
+ 				
+ 	pinctrl_typec: typec1grp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_ENET_RD3__GPIO1_IO29	0x1c4
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03	0x1c4
+ 		>;
+ 	};
+ 		
+diff --git a/arch/arm64/configs/imx_v8_defconfig b/arch/arm64/configs/imx_v8_defconfig
+index dea624731adf..ba1e569f0e63 100644
+--- a/arch/arm64/configs/imx_v8_defconfig
++++ b/arch/arm64/configs/imx_v8_defconfig
+@@ -6441,7 +6441,7 @@ CONFIG_USB_CONFIGFS_F_UVC=y
+ #
+ CONFIG_USB_ZERO=m
+ # CONFIG_USB_ZERO_HNPTEST is not set
+-CONFIG_USB_AUDIO=m
++CONFIG_USB_AUDIO=y
+ CONFIG_GADGET_UAC1=y
+ CONFIG_GADGET_UAC1_LEGACY=y
+ CONFIG_USB_ETH=m

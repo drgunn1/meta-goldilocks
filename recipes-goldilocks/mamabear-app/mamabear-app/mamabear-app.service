@@ -1,0 +1,17 @@
+[Unit]
+Description=Start the HMI application
+After=mosquitto.service weston.socket
+Requires=mosquitto.service weston.socket
+
+[Service]
+Type=simple
+User=root
+Environment=\
+        'XDG_RUNTIME_DIR=/run/user/0' \
+        'WAYLAND_DISPLAY=wayland-1' \
+        'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/0/bus'
+ExecStart=/opt/mamabear/appMamabear
+Restart=always
+
+[Install]
+WantedBy=graphical.target
