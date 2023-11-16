@@ -1,7 +1,7 @@
 DESCRIPTION = "Sample image for Goldilocks Mamabear app"
 LICENSE = "MIT"
 
-require dynamic-layers/qt6-layer/recipes-fsl/images/fsl-image-qt6.bb
+require dynamic-layers/qt6-layer/recipes-fsl/images/imx-image-full.bb
 
 IMAGE_INSTALL += "\
     mamabear-app \
@@ -14,12 +14,14 @@ IMAGE_INSTALL:append = "\
     boost \
     boost-dev \
     boost-staticdev \
+    chromium-ozone-wayland \
     cmake \
     curl \
     e2fsprogs-resize2fs \
     g++ \
     gcc \
     git \
+    htop \
     i2c-tools \
     make \
     mamabear-app \
@@ -28,6 +30,8 @@ IMAGE_INSTALL:append = "\
     openssl \
     openssl-bin \
     packagegroup-core-buildessential \
+    packagegroup-qt6-addons \
+    packagegroup-qt6-essentials \
     pkgconfig \
     python3-cffi \
     python3-click \
@@ -48,7 +52,7 @@ OT_RCP_BUS = "SPI"
 
 PACKAGECONFIG:append:pn-iptables = " libnftnl"
 
-MATTER_PY_PATH="/home/don/imx-yocto-bsp-6.1.1_1.0.0/matter_venv/bin/python3"
+# MATTER_PY_PATH="{$BSPDIR}/matter_venv/bin/python3"
 
 # rsync is only used during development
 IMAGE_INSTALL += "rsync"
