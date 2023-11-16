@@ -8,6 +8,7 @@ SRC_URI = "\
     file://starwars.wav \
     file://wifi-bt.sh \
     file://test.sh \
+    file://uwblib_init.sh \
     file://SE05x-MW-v04.03.01.zip.txt \
     file://UWBIOT_SR150_v04.02.01_libuwbd.zip.txt \
     file://UWBIOT_SR150_v04.02.01_Linux.zip.txt \
@@ -21,12 +22,13 @@ SRC_URI = "\
 
 
 do_install () {
-    install -m 0755 -d ${D}${sysconfdir}/sdc/
+    install -d ${D}${sysconfdir}/sdc/
     install -m 0755 ${WORKDIR}/matter-wifi-startup.sh ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/starwars.wav ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/Moldova.wav ${D}${sysconfdir}/sdc
     install -m 0755 ${WORKDIR}/wifi-bt.sh  ${D}${sysconfdir}/sdc
     install -m 0755 ${WORKDIR}/test.sh  ${D}${sysconfdir}/sdc
+    install -m 0755 ${WORKDIR}/uwblib_init.sh  ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/SE05x-MW-v04.03.01.zip.txt  ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/UWBIOT_SR150_v04.02.01_libuwbd.zip.txt ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/UWBIOT_SR150_v04.02.01_Linux.zip.txt  ${D}${sysconfdir}/sdc

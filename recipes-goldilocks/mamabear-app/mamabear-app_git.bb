@@ -8,60 +8,72 @@ DEPENDS += "\
     qtmultimedia \
     qtshadertools-native \
 "
+
 SRC_URI = "\
     git://g1.sfl.team:29419/futureelectronics/goldilocks/mamabear-app;branch=master;protocol=ssh \
-    file://${BPN}.service \
+    file://mamabear-app.service \
     file://mamabear-ble.service \
     file://mamabear-uwb.service \
-    file://bt_ble_expect.sh \
-    file://sfl_ble.sh \
-    file://sfl_uwb.sh \
-    file://bt.sh \
+    file://bt-ble-expect.sh \
+    file://ble-publisher.sh \
+    file://uwb-publisher.sh \
+    file://bt-setup.sh \
+    file://filter_btctl.py \
+    file://mamabear-ble.conf \
 "
-SRCREV = "a83ac8f49da82dbb194323f1a52e457fbaf7fee7"
+SRCREV = "914f34e6696979c7e72689de975938ac9c8834db"
 
 S = "${WORKDIR}/git"
 
 inherit qt6-cmake systemd
 
-SYSTEMD_SERVICE_${PN} = "${BPN}.service"
-SYSTEMD_SERVICE_${PN} = "mamabear-ble.service"
-SYSTEMD_SERVICE_${PN} = "mamabear-uwb.service"
+SYSTEMD_SERVICE:${PN} = "\
+    mamabear-app.service \
+    mamabear-ble.service \
+    mamabear-uwb.service \
+"
 
 FILES:${PN} += "\
+    ${systemd_system_unitdir} \
     /opt/mamabear \
-    ${systemd_system_unitdir}/${BPN}.service \
-    ${systemd_system_unitdir}/mamabear-ble.service \
-    ${systemd_system_unitdir}/mamabear-uwb.service \
-    ${systemd_system_unitdir}/bt_ble_expect.sh \
-    ${systemd_system_unitdir}/sfl_ble.sh \
-    ${systemd_system_unitdir}/sfl_uwb.sh \
-    ${systemd_system_unitdir}/bt.sh \
+    /etc \
 "
 
 RDEPENDS:${PN} = "\
+    bash \
+    expect \
     liberation-fonts \
     mosquitto \
     mosquitto-clients \
     qtdeclarative-qmlplugins \
 "
-RDEPENDS:mamabear-app-tools = " expect bash "
 
 require recipes-qt/qt6/qt6.inc
 
 do_install() {
-    install -D -m 0755 ${WORKDIR}/sfl_ble.sh ${D}${bindir}/sfl_ble.sh
-    install -D -m 0755 ${WORKDIR}/sfl_uwb.sh ${D}${bindir}/sfl_uwb.sh
-    install -D -m 0755 ${WORKDIR}/bt_ble_expect.sh ${D}${bindir}/bt_ble_expect.sh
-    install -D -m 0755 ${WORKDIR}/bt.sh ${D}${bindir}/bt.sh
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
-    install -D -m 0644 ${WORKDIR}/mamabear-ble.service ${D}${systemd_system_unitdir}/mamabear-ble.service
-    install -D -m 0644 ${WORKDIR}/mamabear-uwb.service ${D}${systemd_system_unitdir}/mamabear-uwb.service
-    install -d ${D}/opt/mamabear
-    cp -R ${WORKDIR}/build/. ${D}/opt/mamabear/.
+    # companion scripts
+    install -d ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/ble-publisher.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/uwb-publisher.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/bt-ble-expect.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/bt-setup.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/filter_btctl.py ${D}/opt/mamabear/bin/
+
+    install -d ${D}/etc/
+    install -m 0644 ${WORKDIR}/mamabear-ble.conf ${D}/etc/
+
+    # systemd units
+    install -d ${D}${systemd_system_unitdir}/
+    install -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${WORKDIR}/mamabear-ble.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${WORKDIR}/mamabear-uwb.service ${D}${systemd_system_unitdir}/
+
+    # Qt app
+    install -d ${D}/opt/mamabear/app
+    cp --no-preserve=ownership -R ${WORKDIR}/build/. ${D}/opt/mamabear/app/.
 
     # cleanup stale files
-    cd ${D}/opt/mamabear/
+    cd ${D}/opt/mamabear/app/
     rm -rf .qt* .rcc meta_types CMake* cmake* .ninja* build.ninja appMamabear_autogen
     rm -rf appMamabear_*.qrc appMamabear_*.txt
 }
