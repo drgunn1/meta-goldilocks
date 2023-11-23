@@ -10,7 +10,7 @@ DEPENDS += "\
 "
 
 SRC_URI = "\
-    git://g1.sfl.team:29419/futureelectronics/goldilocks/mamabear-app;branch=master;protocol=ssh \
+    git@github.com:drgunn1/meta-goldilocks.git;branch=master;protocol=ssh \
     file://mamabear-app.service \
     file://mamabear-ble.service \
     file://mamabear-uwb.service \
@@ -21,7 +21,7 @@ SRC_URI = "\
     file://filter_btctl.py \
     file://mamabear-ble.conf \
 "
-SRCREV = "914f34e6696979c7e72689de975938ac9c8834db"
+SRCREV = "01d2459edc0638f10a53e95b139a941f6c490b43"
 
 S = "${WORKDIR}/git"
 
