@@ -10,7 +10,7 @@ DEPENDS += "\
 "
 
 SRC_URI = "\
-    git@github.com:drgunn1/meta-goldilocks.git;branch=master;protocol=ssh \
+    git://github.com/drgunn1/mamabear-app.git;branch=main;protocol=ssh \
     file://mamabear-app.service \
     file://mamabear-ble.service \
     file://mamabear-uwb.service \
