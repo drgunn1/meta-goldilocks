@@ -9,7 +9,6 @@ IMAGE_INSTALL += "\
 "
 
 IMAGE_ROOTFS_EXTRA_SPACE = "640000"
-LICENSE_FLAGS_ACCEPTED += "commercial"
 
 IMAGE_INSTALL:append = "\
     boost \
