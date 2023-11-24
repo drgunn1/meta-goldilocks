@@ -9,6 +9,7 @@ IMAGE_INSTALL += "\
 "
 
 IMAGE_ROOTFS_EXTRA_SPACE = "640000"
+LICENSE_FLAGS_ACCEPTED += "commercial"
 
 IMAGE_INSTALL:append = "\
     boost \
@@ -33,6 +34,7 @@ IMAGE_INSTALL:append = "\
     packagegroup-qt6-addons \
     packagegroup-qt6-essentials \
     pkgconfig \
+    psplash \
     python3-cffi \
     python3-click \
     python3-cryptography \
@@ -45,6 +47,7 @@ IMAGE_INSTALL:append = "\
     qtmultimedia \
     rng-tools \
     sdc-tests \
+    sox \
     subversion \
 "
 
