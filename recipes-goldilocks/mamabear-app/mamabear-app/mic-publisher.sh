@@ -10,7 +10,7 @@ while true; do
     arecord -d "$duration" -f S32_LE -t wav -r 44100 -D hw:2,0 "$output_file"
     arecord -d "$duration" -f S32_LE -t wav -r 44100 -D hw:3,0 "$output_file"
     rms_amplitude=$(sox "$output_file" -n stat 2>&1 | awk '/RMS     amplitude:/ {print $3}')
-    db_level=$(printf "%.2f" $(echo "20 * l($rms_amplitude)/l(10)" | bc -l))
+    db_level=$(printf "%.2f" $(echo "20 * l($rms_amplitude*3500)/l(10)" | bc -l))
     mosquitto_pub -t sensors/microphone -m $db_level
 
     # Clean up: remove the recorded audio file
