@@ -1,0 +1,39 @@
+From 41e142e1bfd6457ed1c157c3c74609d1cd98a907 Mon Sep 17 00:00:00 2001
+From: drgunn1 <61709123+drgunn1@users.noreply.github.com>
+Date: Mon, 8 Apr 2024 18:14:29 -0700
+Subject: [PATCH] Update imx8mp_evk.h to configure 2GB DDR memory.
+
+This properly defines the physical SDRAM in u-boot and improves overall system stability.
+---
+ include/configs/imx8mp_evk.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/include/configs/imx8mp_evk.h b/include/configs/imx8mp_evk.h
+index 8224daeb4cc..920a6d07b4d 100644
+--- a/include/configs/imx8mp_evk.h
++++ b/include/configs/imx8mp_evk.h
+@@ -205,16 +205,16 @@
+ 
+ #define CONFIG_MMCROOT			"/dev/mmcblk1p2"  /* USDHC2 */
+ 
+-/* Totally 6GB DDR */
++/* Total 2GB DDR for Mamabear */
+ #define CONFIG_SYS_SDRAM_BASE		0x40000000
+ #define PHYS_SDRAM			0x40000000
+-#define PHYS_SDRAM_SIZE			0x40000000	/* 1 GB for Mamabear */
+-#define PHYS_SDRAM_2			0x100000000
+-#ifdef CONFIG_TARGET_IMX8MP_DDR4_EVK
+-#define PHYS_SDRAM_2_SIZE		0x40000000	/* 1 GB for Mamabear*/
+-#else
+-#define PHYS_SDRAM_2_SIZE		0xC0000000	/* 3 GB */
+-#endif
++#define PHYS_SDRAM_SIZE			0x80000000	/* 2 GB for Mamabear */
++//#define PHYS_SDRAM_2			0x100000000
++//#ifdef CONFIG_TARGET_IMX8MP_DDR4_EVK
++//#define PHYS_SDRAM_2_SIZE		0x40000000	/* 1 GB */
++//#else
++//#define PHYS_SDRAM_2_SIZE		0xC0000000	/* 3 GB */
++//#endif
+ 
+ #define CONFIG_MXC_UART_BASE		UART2_BASE_ADDR
+ 
