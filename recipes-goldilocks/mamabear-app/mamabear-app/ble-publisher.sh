@@ -3,9 +3,8 @@
 BB_MAC="00:60:37:6B:C7:E8"
 
 # Setup BT driver and friends if needed
-if ! lsmod | grep -q moal; then
-	/opt/mamabear/bin/bt-setup.sh
-fi
+/opt/mamabear/bin/bt-setup.sh
+
 
 # bt-ble-expect.sh streams the output of bluetoothctl to stdout.
 # Parse its output, and publish extracted values to MQTT.

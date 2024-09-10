@@ -7,6 +7,7 @@ modprobe moal mod_para=nxp/wifi_mod_para.conf
 systemctl start bluetooth.service
 
 if ! hciconfig | grep -q hci0; then
-	hciattach /dev/ttymxc0 any -s 3000000 3000000 flow
+	modprobe btnxpuart
+	sleep 3
 	hciconfig hci0 up
 fi

@@ -4,12 +4,12 @@
 # reported distance information to MQTT.
 
 # Ensure the driver is loaded
-modprobe nxp-sr1xx
+modprobe sr1xx
 
-export LD_LIBRARY_PATH="/usr/local/uwbiot/lib:/usr/local/lib"
+export LD_LIBRARY_PATH="/usr/local/uwbiot/uwb_api:/usr/local/lib"
 
 # Publish distance from stdout's 5th column
-stdbuf -oL /home/root/bin/demo_ranging_controlee 2>/dev/null |
+stdbuf -oL /root/bin/demo_ranging_controlee 2>/dev/null |
     awk '
 /distance/ {
     system("mosquitto_pub -t sensors/sr040-distance -m " $5);

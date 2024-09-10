@@ -7,14 +7,12 @@ IMAGE_INSTALL += "\
     mamabear-app \
     qtmultimedia \
 "
-
 IMAGE_ROOTFS_EXTRA_SPACE = "640000"
 
 IMAGE_INSTALL:append = "\
     boost \
     boost-dev \
     boost-staticdev \
-    chromium-ozone-wayland \
     cmake \
     curl \
     e2fsprogs-resize2fs \
@@ -30,7 +28,6 @@ IMAGE_INSTALL:append = "\
     openssl \
     openssl-bin \
     packagegroup-core-buildessential \
-    packagegroup-qt6-addons \
     packagegroup-qt6-essentials \
     pkgconfig \
     psplash \
@@ -49,6 +46,7 @@ IMAGE_INSTALL:append = "\
     sox \
     subversion \
 "
+#    packagegroup-qt6-addons
 
 OT_RCP_BUS = "SPI"
 

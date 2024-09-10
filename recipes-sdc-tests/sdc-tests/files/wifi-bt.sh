@@ -16,7 +16,8 @@ sleep 10
 udhcpc -i mlan0 -t 10 -n -A 3
 
 if ! hciconfig | grep -q hci0; then  
-	hciattach /dev/ttymxc0 any -s 3000000 3000000 flow
+	modprobe btnxpuart
+	sleep 3
 	hciconfig hci0 up
 fi
 

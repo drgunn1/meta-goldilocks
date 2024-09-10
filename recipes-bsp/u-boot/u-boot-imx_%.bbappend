@@ -1,11 +1,28 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-
-SRC_URI:append = "\
-	file://0001-initial-U-boot-commit-for-Future-Mama-bear-board.patch \
-	file://0002-add-support-for-2600MTS-memory-speed.patch \
-	file://0003-updates-to-u-boot-to-modify-DDR4-memory-configuration-Enable-2600MTS.patch \
-	file://0004-updated-ddr4-timing-for-the-Kingston-3200MTS-memory.patch \
-	file://0005-update-the-device-tree-to-reflect-hardware-changes-on-USB-C-interface.patch \
-	file://0006-Update-imx8mp_evk.h-to-configure-2GB-DDR-memory.patch \
+SRC_URI += "\
+    file://ddr4_timing.c \
+    file://imx8mp_ddr4_evk_defconfig \
+    file://imx8mp_evk.c \
+    file://imx8mp_evk.h \
+    file://imx8mp-evk.dts \
+    file://spl.c \
+    file://imx8mp-evk-u-boot.dtsi \
+    file://fdc-mamabear.dts \
+    file://Makefile \
+    file://fdc-mamabear-u-boot.dtsi \
 "
+
+do_override_sources () {
+    install -Dm 0644 ${WORKDIR}/ddr4_timing.c ${S}/board/freescale/imx8mp_evk/ddr4_timing.c
+    install -Dm 0644 ${WORKDIR}/imx8mp_ddr4_evk_defconfig ${S}/configs/imx8mp_ddr4_evk_defconfig
+    install -Dm 0644 ${WORKDIR}/imx8mp_evk.c ${S}/board/freescale/imx8mp_evk/imx8mp_evk.c
+    install -Dm 0644 ${WORKDIR}/imx8mp_evk.h ${S}/include/configs/imx8mp_evk.h
+    install -Dm 0644 ${WORKDIR}/imx8mp-evk.dts ${S}/arch/arm/dts/imx8mp-evk.dts
+    install -Dm 0644 ${WORKDIR}/fdc-mamabear.dts ${S}/arch/arm/dts/fdc-mamabear.dts
+    install -Dm 0644 ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
+    install -Dm 0644 ${WORKDIR}/imx8mp-evk-u-boot.dtsi ${S}/arch/arm/dts/imx8mp-evk-u-boot.dtsi
+    install -Dm 0644 ${WORKDIR}/fdc-mamabear-u-boot.dtsi ${S}/arch/arm/dts/fdc-mamabear-u-boot.dtsi
+    install -Dm 0644 ${WORKDIR}/spl.c ${S}/board/freescale/imx8mp_evk/spl.c
+}
+addtask override_sources after do_patch before do_configure
