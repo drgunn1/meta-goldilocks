@@ -27,7 +27,7 @@ unzip -o uwb_api.zip -d /usr/local/uwbiot
 # make install
 # clean up
 rm /root/*.zip
-
+rm /root/uwblib_init.sh
 
 ldconfig /usr/local/lib
 
