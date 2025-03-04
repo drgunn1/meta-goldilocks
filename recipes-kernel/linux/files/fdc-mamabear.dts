@@ -87,13 +87,13 @@
 		regulator-always-on;
 	};
 
-	mipi_cam_reset: cam-reset {
-		compatible = "gpio-reset";
-		reset-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
-		reset-delay-us = <100000>;
-		reset-post-delay-ms = <50>;
-		#reset-cells = <0>;
-	};
+//	mipi_cam_reset: cam-reset {
+//		compatible = "gpio-reset";
+//		reset-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
+//		reset-delay-us = <100000>;
+//		reset-post-delay-ms = <50>;
+//		#reset-cells = <0>;
+//	};
 
 // TODO: OV5640 to fix clocking issue:
 //	 the clock on the digi module is 12MHz. If I specify this as 12MHz the images are black or highly corrupted
@@ -101,11 +101,11 @@
 //	 The way the PLL settings in the OV5640 driver are calculated is likely the cause of this issue but I don't have any documentation
 //	 on the OV5640.  Documentation for the sensor would be needed to fix this.
 
-	ext_osc_24m: ext-osc-24m {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-	};
+//	ext_osc_24m: ext-osc-24m {
+//		compatible = "fixed-clock";
+//		#clock-cells = <0>;
+//		clock-frequency = <24000000>;
+//	};
 
 	reg_usb_otg_vbus: regulator-usb-otg-vbus {
 		compatible = "regulator-fixed";
@@ -492,28 +492,21 @@
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
 
-	ov5640_0: ov5640_mipi@3c {
-		compatible = "ovti,ov5640";
-		reg = <0x3c>;
+	ap1302: ap1302_mipi@3c {
+		compatible = "onsemi,ap1302";
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_csi0_pwn>;
-		clocks = <&ext_osc_24m>;	//the clock on the PCAM 5C module is 12MHz but when I set this to 12MHz the image is black or corrupted
-		clock-names = "xclk";		//as a result the video stream is coming in at half the framerate requested but the images are clear.
-		csi_id = <0>;
-		mclk = <24000000>;
-		mclk_source = <0>;
-		reset = <&mipi_cam_reset>;
-		mipi_csi;
+		pinctrl-0 = <&pinctrl_csi0_rst>, <&pinctrl_csi0_pwn> ;
+		reg = <0x3c>;
+		reset-gpios   = <&gpio1 6 GPIO_ACTIVE_LOW>;
 		status = "okay";
 
 		port {
-			ov5640_mipi_0_ep: endpoint {
-				remote-endpoint = <&mipi_csi0_ep>;
-				data-lanes = <1 2>;
-				clock-lanes = <0>;
+			ap1302_mipi_ep: endpoint {
+				remote-endpoint = <&mipi_csi_ep>;
 			};
 		};
 	};
+
 	rpi_display: rpi_display@45 {
 		compatible = "rpi_display";
 		reg = <0x45>;
@@ -651,7 +644,7 @@
 
 // raspi 7" MIPI display
 &mipi_dsi {
-	status = "okay";
+	status = "disabled";
 
 	panel@0 {
 		compatible = "raspberrypi,tc358762";
@@ -1202,7 +1195,13 @@
 	
 	pinctrl_csi0_pwn: csi0_pwn_grp {
 		fsl,pins = <
-			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06	0x15f
+			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06	0x19
+		>;
+	};
+	
+	pinctrl_csi0_rst: csi0_rst_grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_GPIO1_IO05__GPIO1_IO05	0x19
 		>;
 	};
 
@@ -1289,13 +1288,16 @@
 	status = "okay";
 
 	port {
-		
-		mipi_csi0_ep: endpoint {
-			remote-endpoint = <&ov5640_mipi_0_ep>;
+		mipi_csi_ep: endpoint {
+			remote-endpoint = <&ap1302_mipi_ep>;
 			data-lanes = <2>;
 			csis-hs-settle = <13>;
 			csis-clk-settle = <2>;
 			csis-wclk;
+//			cfg-clk-range = <49>;
+			cfg-clk-range = <28>;
+			hs-clk-range = <0x2b>;
+			bus-type = <4>;
 		};
 	};
 };
@@ -1340,10 +1342,16 @@
 	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
 	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
 	assigned-clock-rates = <400000000>;
+	status = "disabled";
 };
 
 &isp_1 {
 	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
 	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
 	assigned-clock-rates = <400000000>;
+	status = "disabled";
+};
+
+&dewarp {
+	status = "okay";
 };

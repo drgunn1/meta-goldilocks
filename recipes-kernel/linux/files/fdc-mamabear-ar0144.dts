@@ -11,7 +11,7 @@
 
 
 &i2c3 {
-	/delete-node/ov5640_mipi@3c;
+	/delete-node/ap1302_mipi@3c;
 
 	ar0144_0: ar0144_mipi@10 {
 		compatible = "onsemi,ar0144";
@@ -57,7 +57,7 @@
 	//assigned-clock-rates = <266000000>;
 
 	port {
-		endpoint {
+		mipi_csi0_ep: endpoint {
 			remote-endpoint = <&ar0144_mipi_0_ep>;
 			data-lanes = <2>;
 			csis-hs-settle = <9>;
@@ -68,3 +68,5 @@
 &mipi_csi_1 {
 	status = "disabled";
 };
+
+

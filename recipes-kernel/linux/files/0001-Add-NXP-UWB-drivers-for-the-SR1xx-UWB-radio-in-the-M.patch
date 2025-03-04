@@ -1,7 +1,7 @@
 From 70816291e488103dd55344ad501c7be4eda5cf5b Mon Sep 17 00:00:00 2001
 From: Don Gunn <dongunn@hotmail.com>
 Date: Tue, 11 Jun 2024 16:35:10 -0700
-Subject: [PATCH] Add NXP UWM drivers for the SR1xx UWB radio in the Murata 2BP
+Subject: [PATCH] Add NXP UWB drivers for the SR1xx UWB radio in the Murata 2BP
  module.
 
 ---

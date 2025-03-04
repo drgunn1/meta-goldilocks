@@ -22,6 +22,8 @@ SRC_URI = "\
     file://filter_btctl.py \
     file://mamabear-ble.conf \
     file://mic-publisher.sh \
+    file://start-mama.sh \
+    file://stop-mama.sh \
 "
 SRCREV = "01d2459edc0638f10a53e95b139a941f6c490b43"
 
@@ -65,6 +67,8 @@ do_install() {
     install -m 0755 ${WORKDIR}/mic-publisher.sh ${D}/opt/mamabear/bin/
     install -d ${D}/etc/
     install -m 0644 ${WORKDIR}/mamabear-ble.conf ${D}/etc/
+    install -m 0755 ${WORKDIR}/start-mama.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/stop-mama.sh ${D}/opt/mamabear/bin/
 
     # systemd units
     install -d ${D}${systemd_system_unitdir}/

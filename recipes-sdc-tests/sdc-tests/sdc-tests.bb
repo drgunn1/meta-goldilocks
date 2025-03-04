@@ -16,6 +16,8 @@ SRC_URI = "\
     file://uwb-se.zip.txt \
     file://bluetooth.service \
     file://uwb_api.zip.txt \
+    file://lightbulb-matter.sh \
+    file://thermostat-matter.sh \
 "
 
 
@@ -23,6 +25,8 @@ SRC_URI = "\
 do_install () {
     install -d ${D}${sysconfdir}/sdc/
     install -m 0755 ${WORKDIR}/matter-wifi-startup.sh ${D}${sysconfdir}/sdc
+    install -m 0755 ${WORKDIR}/thermostat-matter.sh ${D}${sysconfdir}/sdc
+    install -m 0755 ${WORKDIR}/lightbulb-matter.sh ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/starwars.wav ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/Moldova.wav ${D}${sysconfdir}/sdc
     install -m 0755 ${WORKDIR}/wifi-bt.sh  ${D}${sysconfdir}/sdc

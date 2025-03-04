@@ -13,14 +13,19 @@ IMAGE_INSTALL:append = "\
     boost \
     boost-dev \
     boost-staticdev \
+    camerafw \
     cmake \
     curl \
+    docker-moby \
     e2fsprogs-resize2fs \
+    ffmpeg \
     g++ \
     gcc \
     git \
+    gstreamer1.0-libav \
     htop \
     i2c-tools \
+    libopus \
     make \
     mamabear-app \
     opengl-es-cts \
@@ -28,6 +33,8 @@ IMAGE_INSTALL:append = "\
     openssl \
     openssl-bin \
     packagegroup-core-buildessential \
+    packagegroup-nxp-zigbee-rcp \
+    packagegroup-nxp-otbr \
     packagegroup-qt6-essentials \
     pkgconfig \
     psplash \
@@ -45,14 +52,16 @@ IMAGE_INSTALL:append = "\
     sdc-tests \
     sox \
     subversion \
+    wifi-autoload \
 "
 #    packagegroup-qt6-addons
 
 OT_RCP_BUS = "SPI"
 
 PACKAGECONFIG:append:pn-iptables = " libnftnl"
+PACKAGECONFIG:append:pn-gstreamer1.0-plugins-bad = " opusparse opus "
+PACKAGECONFIG:append:pn-gstreamer1.0-plugins-base = " opus "
 
-# MATTER_PY_PATH="{$BSPDIR}/matter_venv/bin/python3"
 
 # rsync is only used during development
 IMAGE_INSTALL += "rsync"

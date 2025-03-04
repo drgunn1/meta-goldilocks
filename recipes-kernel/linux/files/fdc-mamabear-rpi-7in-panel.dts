@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2019-2020 NXP
+*/
+
+/dts-v1/;
+
+
+#include "fdc-mamabear.dts"
+
+&lcdif1 {
+	status = "okay"; //enable the 7" raspi display
+	};
+	
+&mipi_dsi {
+	status = "okay";
+	};
+

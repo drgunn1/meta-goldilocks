@@ -1,0 +1,27 @@
+From d435b81a750a5a6151c1d0ec9bdb146bcfabac20 Mon Sep 17 00:00:00 2001
+From: Don Gunn <don.gunn@futureelectronics.com>
+Date: Tue, 25 Feb 2025 12:22:52 -0800
+Subject: [PATCH] modify board name to default to imx8mp instead of imx7ulpevk
+ so that fdc-mamabear board will be able to run all of the mx8mp based demos
+ in gopoint.
+
+---
+ engine/DemoPage.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/engine/DemoPage.cpp b/engine/DemoPage.cpp
+index 34ddb6d..a89bdc5 100644
+--- a/engine/DemoPage.cpp
++++ b/engine/DemoPage.cpp
+@@ -120,7 +120,7 @@ void DemoPage::loadJsonData()
+     QString board = QHostInfo::localHostName().toLocal8Bit();
+     // If Demo Launcher is not running on i.MX board, set it to 7ulp
+     if (!board.contains("imx"))
+-        board = "imx7ulpevk";
++        board = "imx8mp";
+     if (board.contains("-"))
+         board = board.split("-")[0];
+     else if (board.endsWith("evk"))
+-- 
+2.34.1
+
