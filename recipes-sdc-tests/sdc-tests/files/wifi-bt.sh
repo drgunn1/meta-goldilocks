@@ -25,4 +25,6 @@ fi
 rm /etc/resolv.conf
 ln /etc/resolv-conf.systemd /etc/resolv.conf
 
+#to start librespot execute: "./librespot -n "Librespot" -b 320 -c . --enable-volume-normalisation --initial-volume 75 --device-type avr"
+
 

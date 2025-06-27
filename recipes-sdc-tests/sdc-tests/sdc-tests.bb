@@ -18,6 +18,8 @@ SRC_URI = "\
     file://uwb_api.zip.txt \
     file://lightbulb-matter.sh \
     file://thermostat-matter.sh \
+    file://librespot \
+    file://credentials.json \
 "
 
 
@@ -39,6 +41,8 @@ do_install () {
     install -m 0644 ${WORKDIR}/uwb-se.zip.txt  ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/bluetooth.service ${D}${sysconfdir}/sdc
     install -m 0644 ${WORKDIR}/uwb_api.zip.txt ${D}${sysconfdir}/sdc
+    install -m 0644 ${WORKDIR}/librespot ${D}${sysconfdir}/sdc
+    install -m 0644 ${WORKDIR}/credentials.json ${D}${sysconfdir}/sdc
 }
 
 

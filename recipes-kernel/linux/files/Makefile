@@ -131,7 +131,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-msc-sm2s-ep1.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-ab2.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-ddr4-evk.dtb
-dtb-$(CONFIG_ARCH_MXC) += fdc-mamabear.dtb fdc-mamabear-rpi-7in-panel.dtb fdc-mamabear-ar0144.dtb fdc-mamabear-ar0830.dtb
+dtb-$(CONFIG_ARCH_MXC) += fdc-mamabear.dtb fdc-mamabear-rpi-7in-panel.dtb fdc-mamabear-ar0144.dtb fdc-mamabear-ar0830.dtb fdc-mamabear-rpi-7in-panel-imx219cam.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-ndm.dtb
 
 imx8mp-evk-revb4-dtbs := imx8mp-evk.dtb imx8mp-evk-revb4.dtbo

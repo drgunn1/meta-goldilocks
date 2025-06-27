@@ -55,7 +55,7 @@ IMAGE_INSTALL:append = "\
     wifi-autoload \
 "
 #    packagegroup-qt6-addons
-
+PACKAGECONFIG:append:pn-ffmpeg = " sdl2 "
 OT_RCP_BUS = "SPI"
 
 PACKAGECONFIG:append:pn-iptables = " libnftnl"

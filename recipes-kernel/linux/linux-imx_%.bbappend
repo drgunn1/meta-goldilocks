@@ -12,12 +12,14 @@ SRC_URI:append = " \
     file://0001-remove-message-warning-about-hblank-data.patch \
     file://fdc-mamabear-ar0830.dts \
     file://mamabear.cfg \
+    file://fdc-mamabear-rpi-7in-panel-imx219cam.dts \
 "
 
 do_override_files () {
     # device-tree customizations
     install -Dm 0644 ${WORKDIR}/fdc-mamabear.dts ${S}/arch/arm64/boot/dts/freescale/fdc-mamabear.dts
     install -Dm 0644 ${WORKDIR}/fdc-mamabear-rpi-7in-panel.dts ${S}/arch/arm64/boot/dts/freescale/fdc-mamabear-rpi-7in-panel.dts
+    install -Dm 0644 ${WORKDIR}/fdc-mamabear-rpi-7in-panel-imx219cam.dts ${S}/arch/arm64/boot/dts/freescale/fdc-mamabear-rpi-7in-panel-imx219cam.dts
     install -Dm 0644 ${WORKDIR}/fdc-mamabear-ar0144.dts ${S}/arch/arm64/boot/dts/freescale/fdc-mamabear-ar0144.dts
     install -Dm 0644 ${WORKDIR}/fdc-mamabear-ar0830.dts ${S}/arch/arm64/boot/dts/freescale/fdc-mamabear-ar0830.dts
     install -Dm 0644 ${WORKDIR}/Makefile ${S}/arch/arm64/boot/dts/freescale/Makefile
