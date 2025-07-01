@@ -28,6 +28,9 @@ IMAGE_INSTALL:append = "\
     libopus \
     make \
     mamabear-app \
+    nodejs \
+    nodejs-npm \
+    nss \
     opengl-es-cts \
     opensc \
     openssl \
@@ -55,7 +58,8 @@ IMAGE_INSTALL:append = "\
     wifi-autoload \
 "
 #    packagegroup-qt6-addons
-PACKAGECONFIG:append:pn-ffmpeg = " sdl2 "
+PACKAGECONFIG:append:pn-ffmpeg = " sdl2"
+PACKAGECONFIG:append:pn-nodejs = " npm"
 OT_RCP_BUS = "SPI"
 
 PACKAGECONFIG:append:pn-iptables = " libnftnl"

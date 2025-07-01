@@ -21,6 +21,7 @@ unzip -o uwb.zip
 mkdir /usr/local
 unzip -o uwb-se.zip -d /usr/local
 unzip -o uwb_api.zip -d /usr/local/uwbiot
+chmod +x /root/librespot
 # python3 simw-top/scripts/create_cmake_projects.py
 # cd /root/simw-top_build/imx_native_se050_t1oi2c
 # cmake --build .

@@ -10,7 +10,7 @@ DEPENDS += "\
 "
 
 SRC_URI = "\
-    git://github.com/drgunn1/mamabear-app.git;branch=main;protocol=ssh \
+    git://github.com/drgunn1/mamabear-app.git;branch=2.0.0;protocol=ssh \
     file://mamabear-app.service \
     file://mamabear-ble.service \
     file://mamabear-uwb.service \
@@ -24,8 +24,15 @@ SRC_URI = "\
     file://mic-publisher.sh \
     file://start-mama.sh \
     file://stop-mama.sh \
+    file://camera.py \
+    file://object_detect.py \
+    file://object_detection.sh \
+    file://start_video.sh \
+    file://box_priors.txt \
+    file://coco_labels_list.txt \
+    file://ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite \
 "
-SRCREV = "01d2459edc0638f10a53e95b139a941f6c490b43"
+SRCREV = "2c941670c322127f9f715cec576d84ed46f6de6c"
 
 S = "${WORKDIR}/git"
 
@@ -69,6 +76,13 @@ do_install() {
     install -m 0644 ${WORKDIR}/mamabear-ble.conf ${D}/etc/
     install -m 0755 ${WORKDIR}/start-mama.sh ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/stop-mama.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/camera.py ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/object_detect.py ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/object_detection.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/start_video.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/box_priors.txt ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/coco_labels_list.txt ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite ${D}/opt/mamabear/bin/
 
     # systemd units
     install -d ${D}${systemd_system_unitdir}/
