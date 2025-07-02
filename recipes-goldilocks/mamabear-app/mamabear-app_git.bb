@@ -26,13 +26,13 @@ SRC_URI = "\
     file://stop-mama.sh \
     file://camera.py \
     file://object_detect.py \
-    file://object_detection.sh \
-    file://start_video.sh \
     file://box_priors.txt \
     file://coco_labels_list.txt \
     file://ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite \
+    file://go.png \
+    file://stop.png \
 "
-SRCREV = "2c941670c322127f9f715cec576d84ed46f6de6c"
+SRCREV = "ac6a754528fe415995de6a25e7e46f4985999f28"
 
 S = "${WORKDIR}/git"
 
@@ -78,11 +78,11 @@ do_install() {
     install -m 0755 ${WORKDIR}/stop-mama.sh ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/camera.py ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/object_detect.py ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/object_detection.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/start_video.sh ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/box_priors.txt ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/coco_labels_list.txt ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/go.png ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/stop.png ${D}/opt/mamabear/bin/
 
     # systemd units
     install -d ${D}${systemd_system_unitdir}/
