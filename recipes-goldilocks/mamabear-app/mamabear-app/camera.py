@@ -40,7 +40,7 @@ class GStreamerApp(Gtk.Window):
 
         # Example pipeline: Display /dev/video3 to screen
         pipeline_description = (
-            "v4l2src device=/dev/video3 ! videoconvert ! autovideosink sync=false"
+            "v4l2src device=/dev/video3 ! fpsdisplaysink video-sink=waylandsink sync=false"
         )
 
         try:
