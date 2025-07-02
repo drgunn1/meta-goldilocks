@@ -31,6 +31,8 @@ SRC_URI = "\
     file://ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite \
     file://go.png \
     file://stop.png \
+    file://camera.sh \
+    file://object_detect.sh \
 "
 SRCREV = "ac6a754528fe415995de6a25e7e46f4985999f28"
 
@@ -49,6 +51,7 @@ FILES:${PN} += "\
     ${systemd_system_unitdir} \
     /opt/mamabear \
     /etc \
+    /root \
 "
 
 RDEPENDS:${PN} = "\
@@ -83,6 +86,9 @@ do_install() {
     install -m 0755 ${WORKDIR}/ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/go.png ${D}/opt/mamabear/bin/
     install -m 0755 ${WORKDIR}/stop.png ${D}/opt/mamabear/bin/
+    install -d ${D}/root/
+    install -m 0755 ${WORKDIR}/camera.sh ${D}/root/
+    install -m 0755 ${WORKDIR}/object_detect.sh ${D}/root/
 
     # systemd units
     install -d ${D}${systemd_system_unitdir}/
