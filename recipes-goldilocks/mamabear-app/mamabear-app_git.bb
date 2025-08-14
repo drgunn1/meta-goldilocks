@@ -33,6 +33,10 @@ SRC_URI = "\
     file://stop.png \
     file://camera.sh \
     file://object_detect.sh \
+    file://find_baby.sh \
+    file://find_baby.py \
+    file://gtk_find_baby.sh \
+    file://baby.png \
 "
 SRCREV = "ac6a754528fe415995de6a25e7e46f4985999f28"
 
@@ -89,6 +93,10 @@ do_install() {
     install -d ${D}/root/
     install -m 0755 ${WORKDIR}/camera.sh ${D}/root/
     install -m 0755 ${WORKDIR}/object_detect.sh ${D}/root/
+    install -m 0755 ${WORKDIR}/find_baby.sh ${D}/root/
+    install -m 0755 ${WORKDIR}/find_baby.py ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/gtk_find_baby.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${WORKDIR}/baby.png ${D}/opt/mamabear/bin/
 
     # systemd units
     install -d ${D}${systemd_system_unitdir}/
