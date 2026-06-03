@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
 index 34cc027f8b390..f53e0c413be00 100644
 --- a/drivers/gpu/drm/bridge/Kconfig
@@ -267,7 +269,7 @@ index 0000000000000..fd32b4f51f4e3
 +{
 +	struct tc358867 *panel;
 +	struct device *dev = &dsi->dev;
-+	int err;
++	// int err;
 +
 +	panel = devm_kzalloc(dev, sizeof(*panel), GFP_KERNEL);
 +	if (!panel)
@@ -289,7 +291,7 @@ index 0000000000000..fd32b4f51f4e3
 +	return 0;
 +}
 +
-+static int tc358867_remove(struct device *dev)
++static void tc358867_remove(struct device *dev)
 +{
 +	struct tc358867 *panel = dev_get_drvdata(dev);
 +
@@ -297,7 +299,7 @@ index 0000000000000..fd32b4f51f4e3
 +
 +	tc358867_disable(&panel->base);
 +
-+	return 0;
++	// return 0;
 +}
 +
 +static void tc358867_shutdown(struct device *dev)
@@ -349,7 +351,7 @@ index 0000000000000..fd32b4f51f4e3
 +	const struct bridge_desc *desc;
 +	const struct of_device_id *id;
 +	const struct panel_desc *pdesc;
-+	u32 val;
++	// u32 val;
 +	int err;
 +
 +	id = of_match_node(dsi_of_match, dsi->dev.of_node);
@@ -386,7 +388,7 @@ index 0000000000000..fd32b4f51f4e3
 +
 +//	return tc358867_remove(&dsi->dev);
 +	tc358867_remove(&dsi->dev);
-+	return;
++	// return;
 +}
 +
 +static void tc358867_dsi_shutdown(struct mipi_dsi_device *dsi)
@@ -898,7 +900,7 @@ index 0000000000000..cf16bec547a86
 +static int tc358762_dsi_probe(struct mipi_dsi_device *dsi)
 +{
 +	const struct bridge_desc *desc;
-+	const struct of_device_id *id;
++	const struct of_device_id *id = of_match_device(dsi_of_match, dev);
 +	const struct panel_desc *pdesc;
 +	u32 val;
 +	int err;

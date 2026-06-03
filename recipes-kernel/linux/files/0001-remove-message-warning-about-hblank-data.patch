@@ -2,6 +2,7 @@ From 0c2159de0632e6604e1103be8052eecffb1a0dd9 Mon Sep 17 00:00:00 2001
 From: Don Gunn <dongunn@hotmail.com>
 Date: Wed, 22 May 2024 17:51:34 -0700
 Subject: [PATCH] remove message warning about hblank data
+Upstream-Status: Pending
 
 ---
  drivers/gpu/drm/bridge/sec-dsim.c | 2 --

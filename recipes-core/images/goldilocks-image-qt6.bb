@@ -36,8 +36,6 @@ IMAGE_INSTALL:append = "\
     openssl \
     openssl-bin \
     packagegroup-core-buildessential \
-    packagegroup-nxp-zigbee-rcp \
-    packagegroup-nxp-otbr \
     packagegroup-qt6-essentials \
     pkgconfig \
     psplash \

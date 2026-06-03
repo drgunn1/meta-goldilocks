@@ -9,6 +9,8 @@ Subject: [PATCH] modify board name to default to imx8mp instead of imx7ulpevk
  engine/DemoPage.cpp | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
+Upstream-Status: Inappropriate  [platform specific changes]
+
 diff --git a/engine/DemoPage.cpp b/engine/DemoPage.cpp
 index 34ddb6d..a89bdc5 100644
 --- a/engine/DemoPage.cpp

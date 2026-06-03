@@ -54,7 +54,7 @@
 	usdhc1_pwrseq: usdhc1_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&gpio4 0 GPIO_ACTIVE_LOW>;
-	//	post-power-on-delay-ms = <80>;
+		post-power-on-delay-ms = <80>;
 	};
 	
 	reg_audio_pwr: regulator-audio-pwr {
@@ -106,6 +106,12 @@
 //		#clock-cells = <0>;
 //		clock-frequency = <24000000>;
 //	};
+
+	ext_osc_48m: ext-osc-48m {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <48000000>;
+	};
 
 	reg_usb_otg_vbus: regulator-usb-otg-vbus {
 		compatible = "regulator-fixed";
@@ -359,10 +365,17 @@
 	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
 	status = "okay";
 
-	spidev2: spidev@0 {
+//	spidev2: spidev@0 {
+//		reg = <0>;
+//		compatible = "lwn,bk4";
+//		spi-max-frequency = <1000000>;
+//	};
+
+	spidev0: spi@0 {
 		reg = <0>;
-		compatible = "lwn,bk4";
-		spi-max-frequency = <1000000>;
+		compatible = "rohm,dh2228fv";
+		spi-max-frequency = <500000>;
+		label="IWxxx_SPIDEV";
 	};
    
 };
@@ -493,18 +506,58 @@
 	status = "okay";
 
 	ap1302: ap1302_mipi@3c {
-		compatible = "onsemi,ap1302";
+		compatible = "onnn,ap1302";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_csi0_rst>, <&pinctrl_csi0_pwn> ;
 		reg = <0x3c>;
+		clocks = <&ext_osc_48m>;
 		reset-gpios   = <&gpio1 6 GPIO_ACTIVE_LOW>;
 		status = "okay";
 
-		port {
-			ap1302_mipi_ep: endpoint {
-				remote-endpoint = <&mipi_csi_ep>;
+//		port {
+//			ap1302_mipi_ep: endpoint {
+//				remote-endpoint = <&mipi_csi_ep>;
+//				data-lanes = <1 2>;
+//			};
+//		};
+		
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			port@0 {
+				reg = <0>;
+			};
+
+			port@1 {
+				reg = <1>;
+			};
+
+			port@2 {
+				reg = <2>;
+
+				ap1302_mipi_ep: endpoint {
+					remote-endpoint = <&mipi_csi_ep>;
+					data-lanes = <1 2>;
+				};
 			};
 		};
+
+		sensors {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			onnn,model = "onnn,ar0832";
+
+			sensor@0 {
+				reg = <0>;
+
+//				vdd-supply = <&reg_dvdd_1v2>;
+//				vddio-supply = <&reg_vddio_1v8>;
+//				vaa-supply = <&reg_avdd_2v8>;
+			};
+		};
+
 	};
 
 	rpi_display: rpi_display@45 {
@@ -727,21 +780,12 @@
 	assigned-clocks = <&clk IMX8MP_CLK_UART1>;
 	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
 	fsl,uart-has-rtscts;
-//	pinctrl-assert-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
+	pinctrl-assert-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
 	status = "okay";
-
-	keep-power-in-suspend;
-	
 	
 	bluetooth {
 		compatible = "nxp,88w8987-bt";
 		fw-init-baudrate = <3000000>;
-		reset-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
-		device-wakeup-gpios = <&gpio4 19 GPIO_ACTIVE_HIGH>;
-		interrupt-parent = <&gpio4>;
-		interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
-		interrupt-names = "wakeup";
-		wakeup-source;
 	};
 };
 
@@ -829,19 +873,18 @@
 
 
 &usdhc1 {
-	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_wlan>;
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_wlan>;
 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_wlan>;
-	pinctrl-3 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_wlan>;
 	mmc-pwrseq = <&usdhc1_pwrseq>;
 	vmmc-supply = <&reg_usdhc1_vmmc>;
-//	pinctrl-assert-gpios = <&gpio4 11 GPIO_ACTIVE_HIGH>;
+	pinctrl-assert-gpios = <&gpio4 11 GPIO_ACTIVE_HIGH>;
 	bus-width = <4>;
 	keep-power-in-suspend;
 	non-removable;
 	wakeup-source;
-//	fsl,sdio-async-interrupt-enabled;
+	fsl,sdio-async-interrupt-enabled;
 	status = "okay";
 	
 	wifi_wake_host {
@@ -912,7 +955,7 @@
 			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK		0x82
 			MX8MP_IOMUXC_ECSPI2_MOSI__ECSPI2_MOSI		0x82
 			MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO		0x82
-			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x40000
+			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x000 //0x40000
 		>;
 	};
 
@@ -1305,9 +1348,9 @@
 			csis-clk-settle = <2>;
 			csis-wclk;
 //			cfg-clk-range = <49>;
-			cfg-clk-range = <28>;
-			hs-clk-range = <0x2b>;
-			bus-type = <4>;
+//			cfg-clk-range = <28>;
+//			hs-clk-range = <0x2b>;
+//			bus-type = <4>;
 		};
 	};
 };

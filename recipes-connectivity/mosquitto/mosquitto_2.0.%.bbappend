@@ -6,5 +6,5 @@ PACKAGECONFIG:remove = "ssl dlt websockets"
 PACKAGECONFIG:append = " systemd"
 
 do_install:append() {
-    install -Dm 0644 ${WORKDIR}/mosquitto.mamabear.conf ${D}${sysconfdir}/mosquitto/mosquitto.conf
+    install -Dm 0644 ${WORKDIR}/sources-unpack/mosquitto.mamabear.conf ${D}${sysconfdir}/mosquitto/mosquitto.conf
 }

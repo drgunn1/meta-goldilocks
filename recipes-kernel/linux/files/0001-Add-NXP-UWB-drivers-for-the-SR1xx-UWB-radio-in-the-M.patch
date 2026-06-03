@@ -3,6 +3,7 @@ From: Don Gunn <dongunn@hotmail.com>
 Date: Tue, 11 Jun 2024 16:35:10 -0700
 Subject: [PATCH] Add NXP UWB drivers for the SR1xx UWB radio in the Murata 2BP
  module.
+Upstream-Status: Pending
 
 ---
  drivers/misc/Kconfig  |   12 +
@@ -971,7 +972,7 @@ index 000000000000..1797dbca962a
 +	unsigned int irq_flags;
 +
 +	pr_info("%s chip select : %d , bus number = %d\n", __func__,
-+		spi->chip_select, spi->master->bus_num);
++		spi->chip_select, spi->controller->bus_num);
 +
 +	ret = sr1xx_parse_dt(&spi->dev, &platform_data);
 +	if (ret) {
