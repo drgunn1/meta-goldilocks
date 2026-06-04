@@ -8,7 +8,6 @@ SRC_URI:append = " \
     file://fdc-mamabear-rpi-7in-panel.dts \
     file://fdc-mamabear-ar0144.dts \
     file://Makefile \
-    file://0001-remove-message-warning-about-hblank-data.patch \
     file://fdc-mamabear-ar0830.dts \
     file://mamabear.cfg \
     file://fdc-mamabear-rpi-7in-panel-imx219cam.dts \
@@ -16,7 +15,7 @@ SRC_URI:append = " \
 #TODO: updates needed to the RPI 7" touch screen drivers. Not ready yet for this kernel version.
 #    file://add-drivers-for-rpi-7in-display.patch
 #    file://0001-add-drivers-for-raspi-7-touch-screen-display.patch
-
+#    file://0001-remove-message-warning-about-hblank-data.patch
 
 do_override_files () {
     # device-tree customizations
