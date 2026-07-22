@@ -228,7 +228,7 @@
 
 	sound-micfil {
 		compatible = "fsl,imx-audio-card";
-		model = "imx-audio-micfil";
+		model = "micfil-audio";
 		pri-dai-link {
 			link-name = "micfil hifi";
 			format = "i2s";
@@ -547,7 +547,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			onnn,model = "onnn,ar0832";
+			onnn,model = "onnn,ar0830";
 
 			sensor@0 {
 				reg = <0>;

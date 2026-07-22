@@ -1,0 +1,36 @@
+From 8280c31a036adc2b9c35e471f3c90a4929b783c7 Mon Sep 17 00:00:00 2001
+From: Don Gunn <don.gunn@futureelectronics.com>
+Date: Tue, 21 Jul 2026 17:35:58 -0700
+Subject: [PATCH] add support for On Semi AR0830 image sensor on Cyclops 2
+ board
+
+---
+ drivers/media/i2c/ap1302.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/media/i2c/ap1302.c b/drivers/media/i2c/ap1302.c
+index 56a156603fae..5c1d21486f3f 100644
+--- a/drivers/media/i2c/ap1302.c
++++ b/drivers/media/i2c/ap1302.c
+@@ -520,6 +520,18 @@ static const struct ap1302_sensor_info ap1302_sensor_info[] = {
+ 			{ "vdd", 0 },
+ 			{ NULL, 0 },
+ 		},
++	}, {
++		.model = "onnn,ar0830",
++		.name = "ar0830",
++		.i2c_addr = 0x36,
++		.resolution = { 3840, 2160 },
++		.format = MEDIA_BUS_FMT_SRGGB12_1X12,
++		.supplies = (const struct ap1302_sensor_supply[]) {
++			{ "vaa", 0 },
++			{ "vddio", 0 },
++			{ "vdd", 0 },
++			{ NULL, 0 },
++		},
+ 	},
+ };
+ 
+-- 
+2.34.1
+

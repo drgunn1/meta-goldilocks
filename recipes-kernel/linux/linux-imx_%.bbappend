@@ -4,6 +4,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI:append = " \
     file://0001-Add-NXP-UWB-drivers-for-the-SR1xx-UWB-radio-in-the-M.patch \
+    file://0001-add-support-for-On-Semi-AR0830-image-sensor-on-Cyclo.patch \
     file://fdc-mamabear.dts \
     file://fdc-mamabear-rpi-7in-panel.dts \
     file://fdc-mamabear-ar0144.dts \
