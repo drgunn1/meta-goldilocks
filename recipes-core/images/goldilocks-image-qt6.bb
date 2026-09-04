@@ -28,6 +28,7 @@ IMAGE_INSTALL:append = "\
     libopus \
     make \
     mamabear-app \
+    mlanutl \
     nodejs \
     nodejs-npm \
     nss \
