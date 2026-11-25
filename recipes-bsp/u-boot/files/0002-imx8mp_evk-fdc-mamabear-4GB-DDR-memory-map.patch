@@ -1,0 +1,32 @@
+From 63274a0ad9b8d1bb17edfcdf4993775d15a913f0 Mon Sep 17 00:00:00 2001
+From: Don Gunn <don.gunn@futureelectronics.com>
+Date: Wed, 25 Nov 2026 14:00:42 -0700
+Subject: [PATCH] imx8mp_evk: fdc-mamabear 4GB DDR memory map
+
+Upstream-Status: Inappropriate [board specific]
+---
+ include/configs/imx8mp_evk.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/include/configs/imx8mp_evk.h b/include/configs/imx8mp_evk.h
+index f26e0e020f9..fd6627c9f71 100644
+--- a/include/configs/imx8mp_evk.h
++++ b/include/configs/imx8mp_evk.h
+@@ -21,10 +21,12 @@
+ #define CFG_SYS_INIT_RAM_SIZE	0x80000
+ 
+ 
+-/* Total 2GB DDR for Mamabear */
++/* Total 4GB DDR for Mamabear (MAMABEAR_DDR_SIZE = "4GB") */
+ #define CFG_SYS_SDRAM_BASE		0x40000000
+ #define PHYS_SDRAM			0x40000000
+-#define PHYS_SDRAM_SIZE			0x80000000	/* 2 GB for Mamabear */
++#define PHYS_SDRAM_SIZE			0xC0000000	/* 3 GB below 4GB boundary */
++#define PHYS_SDRAM_2			0x100000000
++#define PHYS_SDRAM_2_SIZE		0x40000000	/* 1 GB above 4GB boundary */
+ 
+ 
+ #define CFG_MXC_UART_BASE		UART2_BASE_ADDR
+-- 
+2.43.0
+

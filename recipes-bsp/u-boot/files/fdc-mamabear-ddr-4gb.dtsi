@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * fdc-mamabear 4GB DDR variant (MAMABEAR_DDR_SIZE = "4GB").
+ * 3GB below the 4GB boundary plus 1GB above it. The reserved-memory
+ * regions and CMA pool stay below 0xC0000000, so they are valid for
+ * both the 2GB and 4GB boards.
+ */
+&{/memory@40000000} {
+	reg = <0x0 0x40000000 0x0 0xc0000000>,
+	      <0x1 0x00000000 0x0 0x40000000>;
+};
