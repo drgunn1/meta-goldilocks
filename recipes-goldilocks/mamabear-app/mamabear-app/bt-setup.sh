@@ -2,7 +2,7 @@
 #
 # Load the BT driver and setup BT services
 
-wpa_supplicant -B -Dnl80211 -imlan0 -c /ect/wpa_supplicant.conf
+wpa_supplicant -B -Dnl80211 -imlan0 -c /etc/wpa_supplicant.conf
 
 
 systemctl start bluetooth.service
