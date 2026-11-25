@@ -7,7 +7,6 @@ inherit mamabear-ddr
 SRC_URI:append = " \
     file://0001-Add-NXP-UWB-drivers-for-the-SR1xx-UWB-radio-in-the-M.patch \
     file://0001-add-support-for-On-Semi-AR0830-image-sensor-on-Cyclo.patch \
-    file://0001-updated-HDMI-driver-to-prevent-using-modes-with-a-pi.patch \
     file://0001-arm64-dts-freescale-build-fdc-mamabear-device-trees.patch \
     file://fdc-mamabear.dts \
     file://fdc-mamabear-rpi-7in-panel.dts \
