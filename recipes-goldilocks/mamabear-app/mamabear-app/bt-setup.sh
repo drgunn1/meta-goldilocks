@@ -2,7 +2,8 @@
 #
 # Load the BT driver and setup BT services
 
-modprobe moal mod_para=nxp/wifi_mod_para.conf
+wpa_supplicant -B -Dnl80211 -imlan0 -c /ect/wpa_supplicant.conf
+
 
 systemctl start bluetooth.service
 
