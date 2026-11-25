@@ -40,7 +40,6 @@ SRC_URI = "\
 "
 SRCREV = "ac6a754528fe415995de6a25e7e46f4985999f28"
 
-S = "${WORKDIR}/git"
 
 inherit qt6-cmake systemd
 
@@ -73,42 +72,42 @@ require recipes-qt/qt6/qt6.inc
 do_install() {
     # companion scripts
     install -d ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/ble-publisher.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/uwb-publisher.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/bt-ble-expect.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/bt-setup.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/filter_btctl.py ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/mic-publisher.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/ble-publisher.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/uwb-publisher.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/bt-ble-expect.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/bt-setup.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/filter_btctl.py ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/mic-publisher.sh ${D}/opt/mamabear/bin/
     install -d ${D}/etc/
-    install -m 0644 ${WORKDIR}/sources-unpack/mamabear-ble.conf ${D}/etc/
-    install -m 0755 ${WORKDIR}/sources-unpack/start-mama.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/stop-mama.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/camera.py ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/object_detect.py ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/box_priors.txt ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/coco_labels_list.txt ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/go.png ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/stop.png ${D}/opt/mamabear/bin/
+    install -m 0644 ${UNPACKDIR}/mamabear-ble.conf ${D}/etc/
+    install -m 0755 ${UNPACKDIR}/start-mama.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/stop-mama.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/camera.py ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/object_detect.py ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/box_priors.txt ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/coco_labels_list.txt ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/ssdlite_mobilenet_v2_coco_quant_uint8_float32_no_postprocess.tflite ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/go.png ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/stop.png ${D}/opt/mamabear/bin/
     install -d ${D}/root/
-    install -m 0755 ${WORKDIR}/sources-unpack/camera.sh ${D}/root/
-    install -m 0755 ${WORKDIR}/sources-unpack/object_detect.sh ${D}/root/
-    install -m 0755 ${WORKDIR}/sources-unpack/find_baby.sh ${D}/root/
-    install -m 0755 ${WORKDIR}/sources-unpack/find_baby.py ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/gtk_find_baby.sh ${D}/opt/mamabear/bin/
-    install -m 0755 ${WORKDIR}/sources-unpack/baby.png ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/camera.sh ${D}/root/
+    install -m 0755 ${UNPACKDIR}/object_detect.sh ${D}/root/
+    install -m 0755 ${UNPACKDIR}/find_baby.sh ${D}/root/
+    install -m 0755 ${UNPACKDIR}/find_baby.py ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/gtk_find_baby.sh ${D}/opt/mamabear/bin/
+    install -m 0755 ${UNPACKDIR}/baby.png ${D}/opt/mamabear/bin/
 
     # systemd units
     install -d ${D}${systemd_system_unitdir}/
-    install -m 0644 ${WORKDIR}/sources-unpack/${BPN}.service ${D}${systemd_system_unitdir}/
-    install -m 0644 ${WORKDIR}/sources-unpack/mamabear-ble.service ${D}${systemd_system_unitdir}/
-    install -m 0644 ${WORKDIR}/sources-unpack/mamabear-uwb.service ${D}${systemd_system_unitdir}/
-    install -m 0644 ${WORKDIR}/sources-unpack/mamabear-mic.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/mamabear-ble.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/mamabear-uwb.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/mamabear-mic.service ${D}${systemd_system_unitdir}/
 
     # Qt app
     install -d ${D}/opt/mamabear/app
-    cp --no-preserve=ownership -R ${WORKDIR}/build/. ${D}/opt/mamabear/app/.
-    cp --no-preserve=ownership -R ${WORKDIR}/build/appmamabear_qmltyperegistrations.cpp ${D}/opt/mamabear/app/.
+    cp --no-preserve=ownership -R ${B}/. ${D}/opt/mamabear/app/.
+    cp --no-preserve=ownership -R ${B}/appmamabear_qmltyperegistrations.cpp ${D}/opt/mamabear/app/.
     # cleanup stale files
     cd ${D}/opt/mamabear/app/
     rm -rf .qt* .rcc meta_types CMake* cmake* .ninja* build.ninja appMamabear_autogen

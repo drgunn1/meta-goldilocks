@@ -6,5 +6,5 @@ SRC_URI += "file://mosquitto.mamabear.conf"
 PACKAGECONFIG:append = " systemd"
 
 do_install:append() {
-    install -Dm 0644 ${WORKDIR}/sources-unpack/mosquitto.mamabear.conf ${D}${sysconfdir}/mosquitto/mosquitto.conf
+    install -Dm 0644 ${UNPACKDIR}/mosquitto.mamabear.conf ${D}${sysconfdir}/mosquitto/mosquitto.conf
 }

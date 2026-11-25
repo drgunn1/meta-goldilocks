@@ -1,0 +1,17 @@
+From: Don Gunn <don.gunn@futureelectronics.com>
+Subject: [PATCH] arm64: dts: freescale: build fdc-mamabear device trees
+
+Upstream-Status: Inappropriate [board specific]
+---
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 1eba413cbd5e..ad120438c69e 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -434,6 +434,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-revb4-ndm.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-revb4-sof-wm8962.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-revb4-rpmsg.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-revb4-rm692c9.dtb
++dtb-$(CONFIG_ARCH_MXC) += fdc-mamabear.dtb fdc-mamabear-rpi-7in-panel.dtb fdc-mamabear-ar0144.dtb fdc-mamabear-ar0830.dtb fdc-mamabear-rpi-7in-panel-imx219cam.dtb
+ 
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-frdm.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-frdm-ap1302-dual.dtb

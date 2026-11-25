@@ -15,8 +15,8 @@ SRC_URI = "\
 
 do_install () {
     install -d ${D}${base_libdir}/firmware/
-    install -m 0644 ${WORKDIR}/sources-unpack/AR0830_PRISM_48MEXTCLK_2LANE_NXP.bin ${D}${base_libdir}/firmware/
-    install -m 0644 ${WORKDIR}/sources-unpack/ap1302.fw ${D}${base_libdir}/firmware/ap1302_ar0830_single_fw.bin
+    install -m 0644 ${UNPACKDIR}/AR0830_PRISM_48MEXTCLK_2LANE_NXP.bin ${D}${base_libdir}/firmware/
+    install -m 0644 ${UNPACKDIR}/ap1302.fw ${D}${base_libdir}/firmware/ap1302_ar0830_single_fw.bin
 }
 
-S = "${WORKDIR}/sources-unpack"
+S = "${UNPACKDIR}"

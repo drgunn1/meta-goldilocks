@@ -10,7 +10,7 @@ Upstream-Status: Inappropriate
  1 file changed, 12 insertions(+)
 
 diff --git a/drivers/media/i2c/ap1302.c b/drivers/media/i2c/ap1302.c
-index 56a156603fae..5c1d21486f3f 100644
+index 64c5fa2942fc..c18ab656b26e 100644
 --- a/drivers/media/i2c/ap1302.c
 +++ b/drivers/media/i2c/ap1302.c
 @@ -520,6 +520,18 @@ static const struct ap1302_sensor_info ap1302_sensor_info[] = {
@@ -22,7 +22,7 @@ index 56a156603fae..5c1d21486f3f 100644
 +		.name = "ar0830",
 +		.i2c_addr = 0x36,
 +		.resolution = { 3840, 2160 },
-+		.format = MEDIA_BUS_FMT_SRGGB12_1X12,
++		.format = MEDIA_BUS_FMT_SRGGB10_1X10,
 +		.supplies = (const struct ap1302_sensor_supply[]) {
 +			{ "vaa", 0 },
 +			{ "vddio", 0 },
@@ -33,5 +33,5 @@ index 56a156603fae..5c1d21486f3f 100644
  };
  
 -- 
-2.34.1
+2.43.0
 

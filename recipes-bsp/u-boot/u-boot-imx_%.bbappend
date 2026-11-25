@@ -1,28 +1,18 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
+# Changes to upstream u-boot-imx files (board code, DDR4 timing, memory map,
+# dtb Makefile entry) are carried as a patch so they rebase cleanly on new
+# BSP releases. New board-only files are installed by do_override_sources.
 SRC_URI += "\
-    file://ddr4_timing.c \
+    file://0001-imx8mp_evk-fdc-mamabear-board-support.patch \
     file://fdc_mamabear_defconfig \
-    file://imx8mp_evk.c \
-    file://imx8mp_evk.h \
-    file://spl.c \
     file://fdc-mamabear.dts \
-    file://Makefile \
     file://fdc-mamabear-u-boot.dtsi \
 "
-#    file://imx8mp-evk-u-boot.dtsi
-#    file://imx8mp-evk.dts
 
 do_override_sources () {
-    install -Dm 0644 ${WORKDIR}/sources-unpack/ddr4_timing.c ${S}/board/freescale/imx8mp_evk/ddr4_timing.c
-    install -Dm 0644 ${WORKDIR}/sources-unpack/fdc_mamabear_defconfig ${S}/configs/fdc_mamabear_defconfig
-    install -Dm 0644 ${WORKDIR}/sources-unpack/imx8mp_evk.c ${S}/board/freescale/imx8mp_evk/imx8mp_evk.c
-    install -Dm 0644 ${WORKDIR}/sources-unpack/imx8mp_evk.h ${S}/include/configs/imx8mp_evk.h
-#    install -Dm 0644 ${WORKDIR}/sources-unpack/imx8mp-evk.dts ${S}/arch/arm/dts/imx8mp-evk.dts
-    install -Dm 0644 ${WORKDIR}/sources-unpack/fdc-mamabear.dts ${S}/arch/arm/dts/fdc-mamabear.dts
-    install -Dm 0644 ${WORKDIR}/sources-unpack/Makefile ${S}/arch/arm/dts/Makefile
-#    install -Dm 0644 ${WORKDIR}/sources-unpack/imx8mp-evk-u-boot.dtsi ${S}/arch/arm/dts/imx8mp-evk-u-boot.dtsi
-    install -Dm 0644 ${WORKDIR}/sources-unpack/fdc-mamabear-u-boot.dtsi ${S}/arch/arm/dts/fdc-mamabear-u-boot.dtsi
-    install -Dm 0644 ${WORKDIR}/sources-unpack/spl.c ${S}/board/freescale/imx8mp_evk/spl.c
+    install -Dm 0644 ${UNPACKDIR}/fdc_mamabear_defconfig ${S}/configs/fdc_mamabear_defconfig
+    install -Dm 0644 ${UNPACKDIR}/fdc-mamabear.dts ${S}/arch/arm/dts/fdc-mamabear.dts
+    install -Dm 0644 ${UNPACKDIR}/fdc-mamabear-u-boot.dtsi ${S}/arch/arm/dts/fdc-mamabear-u-boot.dtsi
 }
 addtask override_sources after do_patch before do_configure

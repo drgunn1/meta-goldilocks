@@ -8,11 +8,12 @@ require conf/machine/include/arm/armv8a/tune-cortexa53.inc
 # inline NEON and FPU code generation
 DEFAULTTUNE:use-mainline-bsp = "cortexa53-crypto"
 
-MACHINE_FEATURES += "pci wifi bluetooth nxp8997-pcie nxp8997-sdio nxp9098-pcie nxp9098-sdio"
+MACHINE_FEATURES += "pci wifi bluetooth nxp9098-pcie nxp9098-sdio"
 
 # NXP BSP can consume proprietary jailhouse and Marvell drivers
 # OP-TEE is also applicable to NXP BSP, mainline BSP seems not to have
 # a full support for it yet.
+# fdc-mamabear: Murata 2BP (IW612) on SDIO
 MACHINE_FEATURES:append:use-nxp-bsp = " optee jailhouse mrvl8997 nxpiw612-sdio"
 
 # Mainline kernel contains only one DTB file for
@@ -29,7 +30,7 @@ IMX_DEFAULT_BOOTLOADER:use-mainline-bsp = "u-boot-fslc"
 UBOOT_SUFFIX = "bin"
 
 UBOOT_CONFIG ??= "sd"
-UBOOT_CONFIG[sd]      = "${UBOOT_CONFIG_BASENAME}_defconfig,sdcard"
+UBOOT_CONFIG[sd]      = "${UBOOT_CONFIG_BASENAME}_defconfig"
 UBOOT_CONFIG[ecc]     = "${UBOOT_CONFIG_BASENAME}_inline_ecc_defconfig"
 
 SPL_BINARY = "spl/u-boot-spl.bin"
@@ -72,3 +73,5 @@ TEE_LOAD_ADDR = "0x56000000"
 
 # Add additional firmware
 MACHINE_FIRMWARE:append = " linux-firmware-ath10k"
+
+# fdc-mamabear: the EVK M7 demo binaries are not deployed to the boot partition

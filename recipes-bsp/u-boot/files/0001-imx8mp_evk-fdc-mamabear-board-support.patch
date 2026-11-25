@@ -1,0 +1,772 @@
+From: Don Gunn <don.gunn@futureelectronics.com>
+Subject: [PATCH] imx8mp_evk: fdc-mamabear board support
+
+Board code, 2GB DDR4 timing and memory map, and dtb build entry for the
+Future FDC i.MX8MP Mamabear board.
+
+Upstream-Status: Inappropriate [board specific]
+---
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 1c7c1536f25..8d53151dde8 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -942,6 +942,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
+ 	imx8mp-dhcom-pdk3-overlay-rev100.dtbo \
+ 	imx8mp-dhcom-picoitx.dtb \
+ 	imx8mp-ddr4-evk.dtb \
++	fdc-mamabear.dtb \
+ 	imx8mp-frdm.dtb \
+ 	imx8mp-icore-mx8mp-edimm2.2.dtb \
+ 	imx8mp-msc-sm2s.dtb \
+diff --git a/board/nxp/imx8mp_evk/ddr4_timing.c b/board/nxp/imx8mp_evk/ddr4_timing.c
+index b344d45ccde..823a5ec3554 100644
+--- a/board/nxp/imx8mp_evk/ddr4_timing.c
++++ b/board/nxp/imx8mp_evk/ddr4_timing.c
+@@ -1,17 +1,21 @@
+ /*
+- * Copyright 2019-2024 NXP
++ * Copyright 2019 NXP
+  *
+- * SPDX-License-Identifier: BSD-3-Clause
++ * SPDX-License-Identifier:	GPL-2.0+
+  *
+- * Code generated with DDR Tool v3.5.0_9-f4561b17.
+- * DDR PHY FW2020.06
++ * Generated code from MX8M_DDR_tool
++ *
++ * Align with uboot version:
++ * imx_v2019.04_5.4.x and above version
++ * For imx_v2018.03_4.14.78_1.0.0_ga ~ imx_v2018.04_4.19.35_1.1.0_ga:
++ * please replace #include <asm/arch/ddr.h> with #include <asm/arch/imx8m_ddr.h>
+  */
+ 
+ #include <linux/kernel.h>
+ #include <asm/arch/ddr.h>
+ 
+-/* Initialize DDRC registers */
+ struct dram_cfg_param ddr_ddrc_cfg[] = {
++	/** Initialize DDRC registers **/
+ 	{ 0x3d400304, 0x1 },
+ 	{ 0x3d400030, 0x1 },
+ 	{ 0x3d400000, 0xa1040010 },
+@@ -23,11 +27,7 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	{ 0x3d400064, 0xc30118 },
+ 	{ 0x3d4000c0, 0x0 },
+ 	{ 0x3d4000c4, 0x1000 },
+-#ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
+-	{ 0x3d400070, 0x3027fd4 },
+-#else
+ 	{ 0x3d400070, 0x3027f90 },
+-#endif
+ 	{ 0x3d400074, 0x790 },
+ 	{ 0x3d4000d0, 0xc0030188 },
+ 	{ 0x3d4000d4, 0x9e0000 },
+@@ -65,23 +65,13 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	{ 0x3d4001c0, 0x1 },
+ 	{ 0x3d4001c4, 0x0 },
+ 	{ 0x3d400200, 0x1f },
+-#ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
+-	{ 0x3d400204, 0x3f0505 },
+-	{ 0x3d400208, 0x600 },
+-	{ 0x3d40020c, 0x14141400 },
+-	{ 0x3d400210, 0x1f1f },
+-	{ 0x3d400214, 0x4040404 },
+-	{ 0x3d400218, 0x4040404 },
+-	{ 0x3d40021c, 0xf04 },
+-#else
+ 	{ 0x3d400204, 0x3f0909 },
+ 	{ 0x3d400208, 0x700 },
+ 	{ 0x3d40020c, 0x0 },
+ 	{ 0x3d400210, 0x1f1f },
+ 	{ 0x3d400214, 0x7070707 },
+ 	{ 0x3d400218, 0x7070707 },
+-	{ 0x3d40021c, 0xf07 },
+-#endif
++	{ 0x3d40021c, 0xf0f },
+ 	{ 0x3d400220, 0x3f01 },
+ 	{ 0x3d400240, 0x6000618 },
+ 	{ 0x3d400244, 0x1323 },
+@@ -128,135 +118,135 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 
+ /* PHY Initialize Configuration */
+ struct dram_cfg_param ddr_ddrphy_cfg[] = {
+-    {0x1005f, 0x2df},
+-    {0x1015f, 0x2df},
+-    {0x1105f, 0x2df},
+-    {0x1115f, 0x2df},
+-    {0x1205f, 0x2df},
+-    {0x1215f, 0x2df},
+-    {0x1305f, 0x2df},
+-    {0x1315f, 0x2df},
+-    {0x11005f, 0x2ff},
+-    {0x11015f, 0x2ff},
+-    {0x11105f, 0x2ff},
+-    {0x11115f, 0x2ff},
+-    {0x11205f, 0x2ff},
+-    {0x11215f, 0x2ff},
+-    {0x11305f, 0x2ff},
+-    {0x11315f, 0x2ff},
+-    {0x55, 0x355},
+-    {0x1055, 0x355},
+-    {0x2055, 0x355},
+-    {0x3055, 0x355},
+-    {0x4055, 0x55},
+-    {0x5055, 0x55},
+-    {0x6055, 0x355},
+-    {0x7055, 0x355},
+-    {0x8055, 0x355},
+-    {0x9055, 0x355},
+-    {0x200c5, 0x19},
+-    {0x1200c5, 0x6},
+-    {0x2002e, 0x2},
+-    {0x12002e, 0x1},
+-    {0x20024, 0x8},
+-    {0x2003a, 0x2},
+-    {0x2007d, 0x212},
+-    {0x2007c, 0x61},
+-    {0x120024, 0x9},
+-    {0x2003a, 0x2},
+-    {0x12007d, 0x212},
+-    {0x12007c, 0x61},
+-    {0x20056, 0x7},
+-    {0x120056, 0xa},
+-    {0x1004d, 0x1a},
+-    {0x1014d, 0x1a},
+-    {0x1104d, 0x1a},
+-    {0x1114d, 0x1a},
+-    {0x1204d, 0x1a},
+-    {0x1214d, 0x1a},
+-    {0x1304d, 0x1a},
+-    {0x1314d, 0x1a},
+-    {0x11004d, 0x1a},
+-    {0x11014d, 0x1a},
+-    {0x11104d, 0x1a},
+-    {0x11114d, 0x1a},
+-    {0x11204d, 0x1a},
+-    {0x11214d, 0x1a},
+-    {0x11304d, 0x1a},
+-    {0x11314d, 0x1a},
+-    {0x10049, 0xeba},
+-    {0x10149, 0xeba},
+-    {0x11049, 0xeba},
+-    {0x11149, 0xeba},
+-    {0x12049, 0xeba},
+-    {0x12149, 0xeba},
+-    {0x13049, 0xeba},
+-    {0x13149, 0xeba},
+-    {0x110049, 0xeba},
+-    {0x110149, 0xeba},
+-    {0x111049, 0xeba},
+-    {0x111149, 0xeba},
+-    {0x112049, 0xeba},
+-    {0x112149, 0xeba},
+-    {0x113049, 0xeba},
+-    {0x113149, 0xeba},
+-    {0x43, 0x63},
+-    {0x1043, 0x63},
+-    {0x2043, 0x63},
+-    {0x3043, 0x63},
+-    {0x4043, 0x63},
+-    {0x5043, 0x63},
+-    {0x6043, 0x63},
+-    {0x7043, 0x63},
+-    {0x8043, 0x63},
+-    {0x9043, 0x63},
+-    {0x20018, 0x5},
+-    {0x20075, 0x2},
+-    {0x20050, 0x0},
+-    {0x20008, 0x320},
+-    {0x120008, 0x10b},
+-    {0x20088, 0x9},
+-    {0x200b2, 0x268},
+-    {0x10043, 0x5b1},
+-    {0x10143, 0x5b1},
+-    {0x11043, 0x5b1},
+-    {0x11143, 0x5b1},
+-    {0x12043, 0x5b1},
+-    {0x12143, 0x5b1},
+-    {0x13043, 0x5b1},
+-    {0x13143, 0x5b1},
+-    {0x1200b2, 0x268},
+-    {0x110043, 0x5b1},
+-    {0x110143, 0x5b1},
+-    {0x111043, 0x5b1},
+-    {0x111143, 0x5b1},
+-    {0x112043, 0x5b1},
+-    {0x112143, 0x5b1},
+-    {0x113043, 0x5b1},
+-    {0x113143, 0x5b1},
+-    {0x200fa, 0x1},
+-    {0x1200fa, 0x1},
+-    {0x20019, 0x5},
+-    {0x120019, 0x4},
+-    {0x200f0, 0x5555},
+-    {0x200f1, 0x5555},
+-    {0x200f2, 0x5555},
+-    {0x200f3, 0x5555},
+-    {0x200f4, 0x5555},
+-    {0x200f5, 0x5555},
+-    {0x200f6, 0x5555},
+-    {0x200f7, 0xf000},
+-    {0x1004a, 0x500},
+-    {0x1104a, 0x500},
+-    {0x1204a, 0x500},
+-    {0x1304a, 0x500},
+-    {0x20025, 0x0},
+-    {0x2002d, 0x0},
+-    {0x12002d, 0x0},
+-    {0x2002c, 0x0},
++	{ 0x1005f, 0x2df },
++	{ 0x1015f, 0x2df },
++	{ 0x1105f, 0x2df },
++	{ 0x1115f, 0x2df },
++	{ 0x1205f, 0x2df },
++	{ 0x1215f, 0x2df },
++	{ 0x1305f, 0x2df },
++	{ 0x1315f, 0x2df },
++	{ 0x11005f, 0x2df },
++	{ 0x11015f, 0x2df },
++	{ 0x11105f, 0x2df },
++	{ 0x11115f, 0x2df },
++	{ 0x11205f, 0x2df },
++	{ 0x11215f, 0x2df },
++	{ 0x11305f, 0x2df },
++	{ 0x11315f, 0x2df },
++	{ 0x55, 0x355 },
++	{ 0x1055, 0x355 },
++	{ 0x2055, 0x355 },
++	{ 0x3055, 0x355 },
++	{ 0x4055, 0x55 },
++	{ 0x5055, 0x55 },
++	{ 0x6055, 0x355 },
++	{ 0x7055, 0x355 },
++	{ 0x8055, 0x355 },
++	{ 0x9055, 0x355 },
++	{ 0x200c5, 0x19 },
++	{ 0x1200c5, 0x6 },
++	{ 0x2002e, 0x2 },
++	{ 0x12002e, 0x1 },
++	{ 0x20024, 0x8 },
++	{ 0x2003a, 0x2 },
++	{ 0x120024, 0x8 },
++	{ 0x2003a, 0x2 },
++	{ 0x20056, 0x7 },
++	{ 0x120056, 0xa },
++	{ 0x1004d, 0x1a },
++	{ 0x1014d, 0x1a },
++	{ 0x1104d, 0x1a },
++	{ 0x1114d, 0x1a },
++	{ 0x1204d, 0x1a },
++	{ 0x1214d, 0x1a },
++	{ 0x1304d, 0x1a },
++	{ 0x1314d, 0x1a },
++	{ 0x11004d, 0x1a },
++	{ 0x11014d, 0x1a },
++	{ 0x11104d, 0x1a },
++	{ 0x11114d, 0x1a },
++	{ 0x11204d, 0x1a },
++	{ 0x11214d, 0x1a },
++	{ 0x11304d, 0x1a },
++	{ 0x11314d, 0x1a },
++	{ 0x10049, 0xeba },
++	{ 0x10149, 0xeba },
++	{ 0x11049, 0xeba },
++	{ 0x11149, 0xeba },
++	{ 0x12049, 0xeba },
++	{ 0x12149, 0xeba },
++	{ 0x13049, 0xeba },
++	{ 0x13149, 0xeba },
++	{ 0x110049, 0xeba },
++	{ 0x110149, 0xeba },
++	{ 0x111049, 0xeba },
++	{ 0x111149, 0xeba },
++	{ 0x112049, 0xeba },
++	{ 0x112149, 0xeba },
++	{ 0x113049, 0xeba },
++	{ 0x113149, 0xeba },
++	{ 0x43, 0xe7 },
++	{ 0x1043, 0xe7 },
++	{ 0x2043, 0xe7 },
++	{ 0x3043, 0xe7 },
++	{ 0x4043, 0xe7 },
++	{ 0x5043, 0xe7 },
++	{ 0x6043, 0xe7 },
++	{ 0x7043, 0xe7 },
++	{ 0x8043, 0xe7 },
++	{ 0x9043, 0xe7 },
++	{ 0x20018, 0x5 },
++	{ 0x20075, 0x2 },
++	{ 0x20050, 0x0 },
++	{ 0x20008, 0x320 },
++	{ 0x120008, 0x10a },
++	{ 0x20088, 0x9 },
++	{ 0x200b2, 0x248 },
++	{ 0x10043, 0x5b1 },
++	{ 0x10143, 0x5b1 },
++	{ 0x11043, 0x5b1 },
++	{ 0x11143, 0x5b1 },
++	{ 0x12043, 0x5b1 },
++	{ 0x12143, 0x5b1 },
++	{ 0x13043, 0x5b1 },
++	{ 0x13143, 0x5b1 },
++	{ 0x1200b2, 0x248 },
++	{ 0x110043, 0x5b1 },
++	{ 0x110143, 0x5b1 },
++	{ 0x111043, 0x5b1 },
++	{ 0x111143, 0x5b1 },
++	{ 0x112043, 0x5b1 },
++	{ 0x112143, 0x5b1 },
++	{ 0x113043, 0x5b1 },
++	{ 0x113143, 0x5b1 },
++	{ 0x200fa, 0x1 },
++	{ 0x1200fa, 0x1 },
++	{ 0x20019, 0x5 },
++	{ 0x120019, 0x5 },
++	{ 0x200f0, 0x5555 },
++	{ 0x200f1, 0x5555 },
++	{ 0x200f2, 0x5555 },
++	{ 0x200f3, 0x5555 },
++	{ 0x200f4, 0x5555 },
++	{ 0x200f5, 0x5555 },
++	{ 0x200f6, 0x5555 },
++	{ 0x200f7, 0xf000 },
++	{ 0x20025, 0x0 },
++	{ 0x2002d, 0x0 },
++	{ 0x12002d, 0x0 },
++	{ 0x2007d, 0x212 },
++	{ 0x12007d, 0x212 },
++	{ 0x2007c, 0x61 },
++	{ 0x12007c, 0x61 },
++	{ 0x1004a, 0x500 },
++	{ 0x1104a, 0x500 },
++	{ 0x1204a, 0x500 },
++	{ 0x1304a, 0x500 },
++	{ 0x2002c, 0x0 },
+ };
+ 
+-/* PHY trained csr */
++/* ddr phy trained csr */
+ struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+ 	{ 0x200b2, 0x0 },
+ 	{ 0x1200b2, 0x0 },
+@@ -977,16 +967,14 @@ struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+ 	{ 0x13630, 0x0 },
+ 	{ 0x13730, 0x0 },
+ 	{ 0x13830, 0x0 },
+-
+ };
+-
+-/* P0 message block parameter for training firmware */
++/* P0 message block paremeter for training firmware */
+ struct dram_cfg_param ddr_fsp0_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x54003, 0xc80 },
+ 	{ 0x54004, 0x2 },
+ 	{ 0x54005, 0x2230 },
+-	{ 0x54006, 0x25e },
++	{ 0x54006, 0x25b },
+ 	{ 0x54007, 0x2000 },
+ 	{ 0x54008, 0x101 },
+ 	{ 0x5400b, 0x31f },
+@@ -1000,44 +988,46 @@ struct dram_cfg_param ddr_fsp0_cfg[] = {
+ 	{ 0x54033, 0x200 },
+ 	{ 0x54034, 0x600 },
+ 	{ 0x54035, 0x1010 },
+-	{ 0x54036, 0x100 },
++	{ 0x54036, 0x101 },
+ 	{ 0x5403f, 0x1221 },
+ 	{ 0x541fc, 0x100 },
+ 	{ 0xd0000, 0x1 },
+ };
+ 
+-/* P1 message block parameter for training firmware */
++
++/* P1 message block paremeter for training firmware */
+ struct dram_cfg_param ddr_fsp1_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x54002, 0x1 },
+ 	{ 0x54003, 0x42a },
+ 	{ 0x54004, 0x2 },
+ 	{ 0x54005, 0x2230 },
+-	{ 0x54006, 0x25e },
++	{ 0x54006, 0x25b },
+ 	{ 0x54007, 0x2000 },
+ 	{ 0x54008, 0x101 },
+-	{ 0x5400b, 0x31f },
++	{ 0x5400b, 0x21f },
+ 	{ 0x5400c, 0xc8 },
++	{ 0x5400d, 0x100 },
+ 	{ 0x54012, 0x1 },
+ 	{ 0x5402f, 0x4 },
+ 	{ 0x54030, 0x501 },
+ 	{ 0x54033, 0x200 },
+ 	{ 0x54034, 0x600 },
+ 	{ 0x54035, 0x10 },
+-	{ 0x54036, 0x100 },
++	{ 0x54036, 0x101 },
+ 	{ 0x5403f, 0x1221 },
+ 	{ 0x541fc, 0x100 },
+ 	{ 0xd0000, 0x1 },
+ };
+ 
+ 
+-/* P0 2D message block parameter for training firmware */
++/* P0 2D message block paremeter for training firmware */
+ struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x54003, 0xc80 },
+ 	{ 0x54004, 0x2 },
+ 	{ 0x54005, 0x2230 },
+-	{ 0x54006, 0x25e },
++	{ 0x54006, 0x25b },
+ 	{ 0x54007, 0x2000 },
+ 	{ 0x54008, 0x101 },
+ 	{ 0x5400b, 0x61 },
+@@ -1052,7 +1042,7 @@ struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0x54033, 0x200 },
+ 	{ 0x54034, 0x600 },
+ 	{ 0x54035, 0x1010 },
+-	{ 0x54036, 0x100 },
++	{ 0x54036, 0x101 },
+ 	{ 0x5403f, 0x1221 },
+ 	{ 0x541fc, 0x100 },
+ 	{ 0xd0000, 0x1 },
+@@ -1232,11 +1222,11 @@ struct dram_cfg_param ddr_phy_pie[] = {
+ 	{ 0xd00e7, 0x400 },
+ 	{ 0x90017, 0x0 },
+ 	{ 0x90026, 0x2a },
+-	{ 0x2000b, 0x64 },
++	{ 0x2000b, 0x384 },
+ 	{ 0x2000c, 0xc8 },
+ 	{ 0x2000d, 0x7d0 },
+ 	{ 0x2000e, 0x2c },
+-	{ 0x12000b, 0x21 },
++	{ 0x12000b, 0x12b },
+ 	{ 0x12000c, 0x42 },
+ 	{ 0x12000d, 0x29a },
+ 	{ 0x12000e, 0x21 },
+@@ -1293,16 +1283,3 @@ struct dram_timing_info dram_timing = {
+ 	.fsp_table = { 3200, 1066, },
+ };
+ 
+-#ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
+-void board_dram_ecc_scrub(void)
+-{
+-	ddrc_inline_ecc_scrub(0x0,0x7ffffff);
+-	ddrc_inline_ecc_scrub(0x8000000,0xfffffff);
+-	ddrc_inline_ecc_scrub(0x10000000,0x17ffffff);
+-	ddrc_inline_ecc_scrub(0x18000000,0x1fffffff);
+-	ddrc_inline_ecc_scrub(0x20000000,0x27ffffff);
+-	ddrc_inline_ecc_scrub(0x28000000,0x2fffffff);
+-	ddrc_inline_ecc_scrub(0x30000000,0x37ffffff);
+-	ddrc_inline_ecc_scrub_end(0x0,0x3fffffff);
+-}
+-#endif
+diff --git a/board/nxp/imx8mp_evk/imx8mp_evk.c b/board/nxp/imx8mp_evk/imx8mp_evk.c
+index 207b8e3e861..9814e9e359e 100644
+--- a/board/nxp/imx8mp_evk/imx8mp_evk.c
++++ b/board/nxp/imx8mp_evk/imx8mp_evk.c
+@@ -181,148 +181,6 @@ int ft_board_setup(void *blob, struct bd_info *bd)
+ }
+ #endif
+ 
+-#ifdef CONFIG_USB_TCPC
+-struct tcpc_port port1;
+-struct tcpc_port port2;
+-
+-static int setup_pd_switch(uint8_t i2c_bus, uint8_t addr)
+-{
+-	struct udevice *bus;
+-	struct udevice *i2c_dev = NULL;
+-	int ret;
+-	uint8_t valb;
+-
+-	ret = uclass_get_device_by_seq(UCLASS_I2C, i2c_bus, &bus);
+-	if (ret) {
+-		printf("%s: Can't find bus\n", __func__);
+-		return -EINVAL;
+-	}
+-
+-	ret = dm_i2c_probe(bus, addr, 0, &i2c_dev);
+-	if (ret) {
+-		printf("%s: Can't find device id=0x%x\n",
+-			__func__, addr);
+-		return -ENODEV;
+-	}
+-
+-	ret = dm_i2c_read(i2c_dev, 0xB, &valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_read failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-	valb |= 0x4; /* Set DB_EXIT to exit dead battery mode */
+-	ret = dm_i2c_write(i2c_dev, 0xB, (const uint8_t *)&valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-
+-	/* Set OVP threshold to 23V */
+-	valb = 0x6;
+-	ret = dm_i2c_write(i2c_dev, 0x8, (const uint8_t *)&valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-
+-	return 0;
+-}
+-
+-int pd_switch_snk_enable(struct tcpc_port *port)
+-{
+-	if (port == &port1) {
+-		debug("Setup pd switch on port 1\n");
+-		return setup_pd_switch(1, 0x72);
+-	} else
+-		return -EINVAL;
+-}
+-
+-/* Port2 is the power supply, port 1 does not support power */
+-struct tcpc_port_config port1_config = {
+-	.i2c_bus = 1, /*i2c2*/
+-	.addr = 0x50,
+-	.port_type = TYPEC_PORT_UFP,
+-	.max_snk_mv = 20000,
+-	.max_snk_ma = 3000,
+-	.max_snk_mw = 45000,
+-	.op_snk_mv = 15000,
+-	.switch_setup_func = &pd_switch_snk_enable,
+-	.disable_pd = true,
+-};
+-
+-struct tcpc_port_config port2_config = {
+-	.i2c_bus = 2, /*i2c3*/
+-	.addr = 0x50,
+-	.port_type = TYPEC_PORT_UFP,
+-	.max_snk_mv = 20000,
+-	.max_snk_ma = 3000,
+-	.max_snk_mw = 45000,
+-	.op_snk_mv = 15000,
+-};
+-
+-#define USB_TYPEC_SEL IMX_GPIO_NR(4, 20)
+-#define USB_TYPEC_EN IMX_GPIO_NR(2, 20)
+-
+-static iomux_v3_cfg_t ss_mux_gpio[] = {
+-	MX8MP_PAD_SAI1_MCLK__GPIO4_IO20 | MUX_PAD_CTRL(NO_PAD_CTRL),
+-	MX8MP_PAD_SD2_WP__GPIO2_IO20 | MUX_PAD_CTRL(NO_PAD_CTRL),
+-};
+-
+-void ss_mux_select(enum typec_cc_polarity pol)
+-{
+-	if (pol == TYPEC_POLARITY_CC1)
+-		gpio_direction_output(USB_TYPEC_SEL, 0);
+-	else
+-		gpio_direction_output(USB_TYPEC_SEL, 1);
+-}
+-
+-static int setup_typec(void)
+-{
+-	int ret;
+-	struct gpio_desc per_12v_desc;
+-
+-	debug("tcpc_init port 2\n");
+-	ret = tcpc_init(&port2, port2_config, NULL);
+-	if (ret) {
+-		printf("%s: tcpc port2 init failed, err=%d\n",
+-		       __func__, ret);
+-	} else if (tcpc_pd_sink_check_charging(&port2)) {
+-		printf("Power supply on USB2\n");
+-
+-		/* Enable PER 12V, any check before it? */
+-		ret = dm_gpio_lookup_name("gpio@20_1", &per_12v_desc);
+-		if (ret) {
+-			printf("%s lookup gpio@20_1 failed ret = %d\n", __func__, ret);
+-			return -ENODEV;
+-		}
+-
+-		ret = dm_gpio_request(&per_12v_desc, "per_12v_en");
+-		if (ret) {
+-			printf("%s request per_12v failed ret = %d\n", __func__, ret);
+-			return -EIO;
+-		}
+-
+-		/* Enable PER 12V regulator */
+-		dm_gpio_set_dir_flags(&per_12v_desc, GPIOD_IS_OUT | GPIOD_IS_OUT_ACTIVE);
+-	}
+-
+-	debug("tcpc_init port 1\n");
+-	imx_iomux_v3_setup_multiple_pads(ss_mux_gpio, ARRAY_SIZE(ss_mux_gpio));
+-	gpio_request(USB_TYPEC_SEL, "typec_sel");
+-	gpio_request(USB_TYPEC_EN, "typec_en");
+-	gpio_direction_output(USB_TYPEC_EN, 0);
+-
+-	ret = tcpc_init(&port1, port1_config, &ss_mux_select);
+-	if (ret) {
+-		printf("%s: tcpc port1 init failed, err=%d\n",
+-		       __func__, ret);
+-	} else {
+-		return ret;
+-	}
+-
+-	return ret;
+-}
+-#endif
+ 
+ #ifdef CONFIG_USB_DWC3
+ 
+@@ -359,6 +217,12 @@ static struct dwc3_device dwc3_device_data = {
+ 	.power_down_scale = 2,
+ };
+ 
++//int dm_usb_gadget_handle_interrupts(struct udevice *dev)
++//{
++//	dwc3_uboot_handle_interrupt(dev);
++//	return 0;
++//}
++
+ static void dwc3_nxp_usb_phy_init(struct dwc3_device *dwc3)
+ {
+ 	u32 RegData;
+@@ -398,25 +262,23 @@ static void dwc3_nxp_usb_phy_init(struct dwc3_device *dwc3)
+ #endif
+ 
+ #if defined(CONFIG_USB_DWC3) || defined(CONFIG_USB_XHCI_IMX8M)
++#define USB1_PWR_EN IMX_GPIO_NR(1, 12)
+ #define USB2_PWR_EN IMX_GPIO_NR(1, 14)
+ int board_usb_init(int index, enum usb_init_type init)
+ {
+-	int ret = 0;
++	imx8m_usb_power(index, true);
+ 
+ 	if (index == 0 && init == USB_INIT_DEVICE) {
+-		imx8m_usb_power(index, true);
+-#ifdef CONFIG_USB_TCPC
+-		ret = tcpc_setup_ufp_mode(&port1);
+-		if (ret)
+-			return ret;
+-#endif
+ 		dwc3_nxp_usb_phy_init(&dwc3_device_data);
+ 		return dwc3_uboot_init(&dwc3_device_data);
+ 	} else if (index == 0 && init == USB_INIT_HOST) {
+-#ifdef CONFIG_USB_TCPC
+-		ret = tcpc_setup_dfp_mode(&port1);
+-#endif
+-		return ret;
++		/* Enable GPIO1_IO12 for 5V VBUS */
++		gpio_request(USB1_PWR_EN, "usb1_pwr");
++		gpio_direction_output(USB1_PWR_EN, 1);
++	} else if (index == 1 && init == USB_INIT_HOST) {
++		/* Enable GPIO1_IO14 for 5V VBUS */
++		gpio_request(USB2_PWR_EN, "usb2_pwr");
++		gpio_direction_output(USB2_PWR_EN, 1);
+ 	}
+ 
+ 	return 0;
+@@ -429,37 +291,18 @@ int board_usb_cleanup(int index, enum usb_init_type init)
+ 		dwc3_uboot_exit(index);
+ 		imx8m_usb_power(index, false);
+ 	} else if (index == 0 && init == USB_INIT_HOST) {
+-#ifdef CONFIG_USB_TCPC
+-		ret = tcpc_disable_src_vbus(&port1);
+-#endif
++		/* Disable GPIO1_IO12 for 5V VBUS */
++		gpio_direction_output(USB1_PWR_EN, 0);
++	} else if (index == 1 && init == USB_INIT_HOST) {
++		/* Disable GPIO1_IO14 for 5V VBUS */
++		gpio_direction_output(USB2_PWR_EN, 0);
+ 	}
+ 
++	imx8m_usb_power(index, false);
++
+ 	return ret;
+ }
+ 
+-#ifdef CONFIG_USB_TCPC
+-/* Not used so far */
+-int board_typec_get_mode(int index)
+-{
+-	int ret = 0;
+-	enum typec_cc_polarity pol;
+-	enum typec_cc_state state;
+-
+-	if (index == 0) {
+-		tcpc_setup_ufp_mode(&port1);
+-
+-		ret = tcpc_get_cc_status(&port1, &pol, &state);
+-		if (!ret) {
+-			if (state == TYPEC_STATE_SRC_RD_RA || state == TYPEC_STATE_SRC_RD)
+-				return USB_INIT_HOST;
+-		}
+-
+-		return USB_INIT_DEVICE;
+-	} else {
+-		return USB_INIT_HOST;
+-	}
+-}
+-#endif
+ #endif
+ 
+ 
+@@ -495,17 +338,15 @@ int board_init(void)
+ 	lock_gp5_fuse();
+ #endif
+ 
+-#ifdef CONFIG_USB_TCPC
+-	setup_typec();
+-#endif
+-
+-#ifdef CONFIG_NAND_MXS
+-	setup_gpmi_nand();
+-#endif
+-
+-#if defined(CONFIG_USB_DWC3) || defined(CONFIG_USB_XHCI_IMX8M)
++//#ifdef CONFIG_USB_TCPC
++//	 setup_typec();
++//
++	/* Enable USB power default */
++	imx8m_usb_power(0, true);
++	imx8m_usb_power(1, true);
+ 	init_usb_clk();
+-#endif
++//#endif
++
+ 	return 0;
+ }
+ 
+@@ -552,8 +393,8 @@ int board_late_init(void)
+ #endif
+ 
+ #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
+-	env_set("board_name", "EVK");
+-	env_set("board_rev", "iMX8MP");
++	env_set("board_name", "MAMABEAR");
++	env_set("board_rev", "FUTURE_1_0");
+ #endif
+ 
+ #ifdef CONFIG_ANDROID_SUPPORT
+diff --git a/include/configs/imx8mp_evk.h b/include/configs/imx8mp_evk.h
+index fdb0c475923..f26e0e020f9 100644
+--- a/include/configs/imx8mp_evk.h
++++ b/include/configs/imx8mp_evk.h
+@@ -20,16 +20,12 @@
+ #define CFG_SYS_INIT_RAM_ADDR	0x40000000
+ #define CFG_SYS_INIT_RAM_SIZE	0x80000
+ 
+-/* Totally 6GB DDR */
++
++/* Total 2GB DDR for Mamabear */
+ #define CFG_SYS_SDRAM_BASE		0x40000000
+ #define PHYS_SDRAM			0x40000000
+-#define PHYS_SDRAM_SIZE			0xC0000000	/* 3 GB */
+-#define PHYS_SDRAM_2			0x100000000
+-#ifdef CONFIG_TARGET_IMX8MP_DDR4_EVK
+-#define PHYS_SDRAM_2_SIZE		0x40000000	/* 1 GB */
+-#else
+-#define PHYS_SDRAM_2_SIZE		0xC0000000	/* 3 GB */
+-#endif
++#define PHYS_SDRAM_SIZE			0x80000000	/* 2 GB for Mamabear */
++
+ 
+ #define CFG_MXC_UART_BASE		UART2_BASE_ADDR
+ 

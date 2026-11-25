@@ -11,8 +11,8 @@ SRC_URI = "\
 
 do_install () {
     install -d ${D}/etc/modules-load.d
-    install -m 0644 ${WORKDIR}/sources-unpack/modules.conf ${D}/etc/modules-load.d
-    install -m 0644 ${WORKDIR}/sources-unpack/moal.conf ${D}/etc/modules-load.d
+    install -m 0644 ${UNPACKDIR}/modules.conf ${D}/etc/modules-load.d
+    install -m 0644 ${UNPACKDIR}/moal.conf ${D}/etc/modules-load.d
 }
 
-S = "${WORKDIR}/sources-unpack"
+S = "${UNPACKDIR}"

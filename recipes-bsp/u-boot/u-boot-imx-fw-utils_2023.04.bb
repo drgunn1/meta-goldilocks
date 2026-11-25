@@ -19,8 +19,8 @@ do_install () {
     install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_printenv
     install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_setenv
 
-    if [ -e ${WORKDIR}/fw_env.config ]; then
-        install -m 0644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
+    if [ -e ${UNPACKDIR}/fw_env.config ]; then
+        install -m 0644 ${UNPACKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
     else
         install -m 0644 ${S}/tools/env/fw_env.config ${D}${sysconfdir}/fw_env.config
     fi

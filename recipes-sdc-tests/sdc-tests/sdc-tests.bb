@@ -26,23 +26,23 @@ SRC_URI = "\
 
 do_install () {
     install -d ${D}${sysconfdir}/sdc/
-    install -m 0755 ${WORKDIR}/sources-unpack/matter-wifi-startup.sh ${D}${sysconfdir}/sdc
-    install -m 0755 ${WORKDIR}/sources-unpack/thermostat-matter.sh ${D}${sysconfdir}/sdc
-    install -m 0755 ${WORKDIR}/sources-unpack/lightbulb-matter.sh ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/starwars.wav ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/Moldova.wav ${D}${sysconfdir}/sdc
-    install -m 0755 ${WORKDIR}/sources-unpack/wifi-bt.sh  ${D}${sysconfdir}/sdc
-    install -m 0755 ${WORKDIR}/sources-unpack/uwblib_init.sh  ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/SE05x-MW-v04.03.01.zip.txt  ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/UWBIOT_SR150_v04.06.00_libuwbd.zip.txt ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/UWBIOT_SR150_v04.06.00_Linux.zip.txt  ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/uwb.zip.txt  ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/bin.zip.txt  ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/uwb-se.zip.txt  ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/bluetooth.service ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/uwb_api.zip.txt ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/librespot ${D}${sysconfdir}/sdc
-    install -m 0644 ${WORKDIR}/sources-unpack/credentials.json ${D}${sysconfdir}/sdc
+    install -m 0755 ${UNPACKDIR}/matter-wifi-startup.sh ${D}${sysconfdir}/sdc
+    install -m 0755 ${UNPACKDIR}/thermostat-matter.sh ${D}${sysconfdir}/sdc
+    install -m 0755 ${UNPACKDIR}/lightbulb-matter.sh ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/starwars.wav ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/Moldova.wav ${D}${sysconfdir}/sdc
+    install -m 0755 ${UNPACKDIR}/wifi-bt.sh  ${D}${sysconfdir}/sdc
+    install -m 0755 ${UNPACKDIR}/uwblib_init.sh  ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/SE05x-MW-v04.03.01.zip.txt  ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/UWBIOT_SR150_v04.06.00_libuwbd.zip.txt ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/UWBIOT_SR150_v04.06.00_Linux.zip.txt  ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/uwb.zip.txt  ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/bin.zip.txt  ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/uwb-se.zip.txt  ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/bluetooth.service ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/uwb_api.zip.txt ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/librespot ${D}${sysconfdir}/sdc
+    install -m 0644 ${UNPACKDIR}/credentials.json ${D}${sysconfdir}/sdc
 }
 
-S = "${WORKDIR}/sources-unpack"
+S = "${UNPACKDIR}"
